@@ -15,7 +15,7 @@ app.use(cors())
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/grapp');
+mongoose.connect('mongodb://localhost:27017/airbnb');
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(callback){

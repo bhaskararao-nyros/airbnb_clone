@@ -13,6 +13,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'fullcalendar-scheduler'
 import 'fullcalendar/dist/fullcalendar.min.css'
 import 'fullcalendar-scheduler/dist/scheduler.min.css'
+import 'mdbvue/build/css/mdb.css';
 
 Vue.use(FullCalendar)
 Vue.use(Notifications)

@@ -11,10 +11,10 @@
 	    <!-- Right aligned nav items -->
 	    <b-navbar-nav class="ml-auto">
 	    	<b-nav-item href="#">Become a host</b-nav-item>
-	      	<b-nav-item href="#" disabled>Earn credit</b-nav-item>
-	      	<b-nav-item href="#" disabled>Help</b-nav-item>
-	      	<b-nav-item href="#" disabled>Sign up</b-nav-item>
-	      	<b-nav-item href="#" disabled>Log in</b-nav-item>
+	      	<b-nav-item href="#">Earn credit</b-nav-item>
+	      	<b-nav-item href="#">Help</b-nav-item>
+	      	<b-nav-item href="#" v-b-modal.signup_modal>Sign up</b-nav-item>
+	      	<b-nav-item href="#" v-b-modal.login_modal>Log in</b-nav-item>
 	    </b-navbar-nav>
 
 	  </b-collapse>
