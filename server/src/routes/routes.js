@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require('../models/user');
 
 router.use('/signup',function(req, res){
-	console.log('|||||||| airbnb login |||||||||||', req.body)
+	console.log('|||||||| airbnb login |||||||||||')
 	User.findOne({email: req.body.email},function(err, user){
 		if(!err && user == null){
 			new User({
@@ -23,7 +23,7 @@ router.use('/signup',function(req, res){
 		} else {
 			res.json({
 				status:'fail',
-				message : 'User already exists',	
+				message : 'User with this email exists',	
 				data : user
 			})
 		}

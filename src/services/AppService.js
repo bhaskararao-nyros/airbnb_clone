@@ -1,10 +1,13 @@
 import Api from '@/services/Api'
 
 export default {
-  fbLogin (params) {
+  fbSignup (params) {
     return Api().post('/signup', params)
   },
-  // getParks () {
-  //   return Api().get('/get_parks')
-  // },
+  gmailSignup (params) {
+    return Api().post('/signup', params)
+  },
+  customSignup (params) {
+    return Api().post('/signup', params)
+  },
 }

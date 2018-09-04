@@ -7,18 +7,20 @@ import FullCalendar from 'vue-full-calendar'
 import Notifications from 'vue-notification'
 import Popover from 'vue-js-popover'
 import BootstrapVue from 'bootstrap-vue'
+import GSignInButton from 'vue-google-signin-button'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'fullcalendar-scheduler'
 import 'fullcalendar/dist/fullcalendar.min.css'
 import 'fullcalendar-scheduler/dist/scheduler.min.css'
-import 'mdbvue/build/css/mdb.css';
+import 'mdbvue/build/css/mdb.css'
 
 Vue.use(FullCalendar)
 Vue.use(Notifications)
 Vue.use(Popover)
 Vue.use(BootstrapVue)
+Vue.use(GSignInButton)
 
 Vue.config.productionTip = false
 
