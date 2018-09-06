@@ -9,5 +9,14 @@ export default {
   },
   customSignup (params) {
     return Api().post('/signup', params)
+  },  
+  fbLogin (params) {
+    return Api().post('/login', params)
+  },
+  gmailLogin (params) {
+    return Api().post('/login', params)
+  },
+  customLogin (params) {
+    return Api().post('/login', params)
   },
 }

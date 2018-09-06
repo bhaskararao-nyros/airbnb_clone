@@ -512,7 +512,7 @@
          </b-col>
       </b-row>
       <div>
-        <!-- Modal Component -->
+        <!-- Login Modal Component Start -->
         <b-modal id="login_modal" title="Login">
           <p class="my-4">Login with e-mail</p>
           <form>
@@ -524,13 +524,15 @@
               type="text"
               placeholder="Password">
             </b-form-input><br>
-            <b-button block variant="success">Login</b-button><br>
+            <b-button block variant="success" @click="onCustomLogin">Login</b-button><br>
           </form>
           <p class="text-center">------------------------------  or  -----------------------------</p>
           <b-button variant="primary" block @click="openFbLoginDialog"><img src="../assets/img/fb.png" width="20px"> Login with Facebook</b-button><br>
-          <b-button variant="danger" block><img src="../assets/img/google.png" width="20px"> Login with Gmail</b-button>
+          <b-button variant="danger" @click="onGoogleLogin" block><img src="../assets/img/google.png" width="20px"> Login with Gmail</b-button>
         </b-modal>
+        <!-- Login Modal Component End -->
 
+        <!-- Signup Modal Component Start -->
         <b-modal id="signup_modal" title="Sign up" ref="signup_modal">
           <div class="social_signup" v-if="!custom_signup">
             <p class="my-4">Sign up with e-mail</p>
@@ -545,7 +547,7 @@
             </form>
             <p class="text-center">------------------------------  or  -----------------------------</p>
             <b-button variant="primary" block @click="openFbSignupDialog"><img src="../assets/img/fb.png" width="20px"> Sign up with Facebook</b-button><br>
-            <b-button variant="danger" @click="onSignIn" block><img src="../assets/img/google.png" width="20px"> Sign up with Gmail</b-button>
+            <b-button variant="danger" @click="onGoogleSignup" block><img src="../assets/img/google.png" width="20px"> Sign up with Gmail</b-button>
           </div>
           <div class="custom_signup" v-if="custom_signup">
             <p class="my-4">Please provide below details</p>
@@ -580,10 +582,12 @@
               </b-form-input>
               <span class="text-danger" v-if="ln_err">Last name required</span>
             <b-button block class="submit_signup_btn" variant="success" @click="submitSignup">Sign up</b-button><br>
-            <p class="text-center">Sign up using <a href="#" @click="openFbSignupDialog">Facebook</a> or <a href="#" @click="onSignIn">Google</a></p>
+            <p class="text-center">Sign up using <a href="#" @click="openFbSignupDialog">Facebook</a> or <a href="#" @click="onGoogleSignup">Google</a></p>
             </form>
           </div>
         </b-modal>
+        <!-- Signup Modal Component End -->
+
       </div>
     </div>
   </div>
@@ -603,7 +607,7 @@ export default {
       googleSignInParams: {
         client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com'
       },
-      signin: {},
+      signin: { login_type:'custom' },
       custom_signup: false,
       signup: { password: '', cnfpass: '', firstname: '', lastname: '', login_type: 'custom',profile_pic: null },
       email_err: false,
@@ -649,13 +653,30 @@ export default {
        }(document, 'script', 'facebook-jssdk'))
     },
     openFbSignupDialog () {
+      FB.login(this.checkSignupState, { scope: 'email' })
+    },
+    checkSignupState (response) {
+      if (response.status === 'connected') {
+        FB.api('/me', { fields: 'first_name,last_name,name,email,picture.height(150).width(150)' }, function(profile) {
+          let data = { firstname: profile.first_name, lastname: profile.last_name, email:'fb_email', login_type: 'facebook', profile_pic: profile.picture.data.url, password: 'no_password' }
+          AppService.fbSignup(data).then(res => {
+            console.log('fb_signup', res)
+          })
+        })
+      } else if (response.status === 'not_authorized') {
+        console.log('not_authorized')
+      } else {
+        console.log('not logged in facebook')
+      }
+    },
+    openFbLoginDialog () {
       FB.login(this.checkLoginState, { scope: 'email' })
     },
     checkLoginState (response) {
       if (response.status === 'connected') {
-        FB.api('/me', { fields: 'first_name,last_name,name,email,picture.height(150).width(150)' }, function(profile) {
-          let data = { firstname: profile.first_name, lastname: profile.last_name, email:'fb_email', login_type: 'facebook', profile_pic: profile.picture.data.url }
-          AppService.fbSignup(data).then(res => {
+        FB.api('/me', { fields: 'first_name,email' }, function(profile) {
+          let data = { firstname: profile.first_name, email:'fb_email', login_type: 'facebook' }
+          AppService.fbLogin(data).then(res => {
             console.log('fb_login', res)
           })
         })
@@ -665,20 +686,36 @@ export default {
         console.log('not logged in facebook')
       }
     },
-    onSignIn(googleUser) {
+    onGoogleSignup () {
       var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signIn().then(function() {
-        let email = auth2.currentUser.get().w3.getEmail(),
-        firstname = auth2.currentUser.get().w3.getGivenName(),
-        lastname = auth2.currentUser.get().w3.getFamilyName(),
-        profile_pic = auth2.currentUser.get().w3.getImageUrl(),
-        login_type = 'google'
-        let data = { email: email, firstname: firstname, lastname: lastname, profile_pic: profile_pic, login_type: login_type }
+      auth2.signIn().then(function(res) {
+        let email = res.w3.getEmail(),
+        firstname = res.w3.getGivenName(),
+        lastname = res.w3.getFamilyName(),
+        profile_pic = res.w3.getImageUrl()
+        let data = { email: email, firstname: firstname, lastname: lastname, profile_pic: profile_pic, login_type: 'google', password: 'no_password' }
         AppService.gmailSignup(data).then(res => {
-          console.log('gmail_res', res)
+          console.log('signup gmail_res', res)
         })
 
       }); 
+    },
+    onGoogleLogin () {
+      var auth2 = gapi.auth2.getAuthInstance();
+      auth2.signIn().then(function() {
+        let email = auth2.currentUser.get().w3.getEmail(),
+        firstname = auth2.currentUser.get().w3.getGivenName()
+        let data = { email: email, firstname: firstname, login_type: 'google' }
+        AppService.gmailLogin(data).then(res => {
+          console.log('login gmail_res', res)
+        })
+
+      }); 
+    },
+    onCustomLogin () {
+      AppService.customLogin(this.signin).then(res => {
+        console.log('custom login res', res)
+      })
     },
     goToSignup () {
       if (this.signup_email === '' || this.signup_email === undefined || this.signup_email === null){

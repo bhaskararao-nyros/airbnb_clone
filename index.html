@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <meta name="google-signin-client_id" content="266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com">
+    <link rel="shortcut icon" href="./src/assets/img/logo.png" />
     <title>Airbnb</title>
   </head>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2LmiHomsV8B4M4GXgPxqcTlk6hLSiT9E&libraries=places"></script>
@@ -22,7 +23,7 @@
         gapi.auth2.init({
             client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com',
             //This two lines are important not to get profile info from your users
-            fetch_basic_profile: false,
+            fetch_basic_profile: true,
             scope: 'email'
         });        
       });     
