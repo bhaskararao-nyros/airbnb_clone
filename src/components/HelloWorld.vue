@@ -602,7 +602,6 @@ import AppService from '@/services/AppService'
 export default {
   data() {
     return {
-      imageUrl: 'http://localhost/Vue_js/airbnb/src/assets/img/home_0.jpg',
       mapLoaded: false,
       googleSignInParams: {
         client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com'
@@ -624,13 +623,6 @@ export default {
   props: {
   },
   methods: {
-    changeBgImage () {
-      let rand = Math.round(Math.random() * 4)
-      this.imageUrl = "http://localhost/Vue_js/airbnb/src/assets/img/home_" + rand + ".jpg"
-      document.getElementById('home_search').style.background = "url("+ this.imageUrl +") no-repeat center"
-      let opacity = document.getElementById('home_search').style.opacity;
-       document.getElementById('home_search').style.opacity = opacity + this.opacityChangeAmount
-    },
     fbInit () {
       window.fbAsyncInit = function() {
         FB.init({
@@ -766,10 +758,6 @@ export default {
   mounted () {
     this.fbInit()
 
-    setInterval(function () {
-      this.changeBgImage()
-    }.bind(this), 5000)
-
     var autocomplete = new google.maps.places.Autocomplete(
       (this.$refs.autocomplete),
       {types: ['geocode']})
@@ -781,16 +769,12 @@ export default {
 </script>
 <style scoped>
 
-.home_search {
-  height: 800px;
-  opacity: 0;
-}
 .google-search-box {
   margin: auto;
   display: block;
   width: 60%;
-  padding: 15px;
-  font-size: 20px;
+  padding: 13px;
+  font-size: 18px;
   font-weight: bold;
   border: none;
 }
@@ -802,7 +786,7 @@ export default {
   margin-left: 20%;
   color: #fff;
   font-weight: bold;
-  font-size: 50px;
+  font-size: 44px;
   width: 56%;
 }
 .airbnb_plus {
@@ -841,17 +825,15 @@ export default {
 .homes_around_world_blk {
   margin-top: 2%;
 }
-.hello div {
-  -webkit-transition: opacity 1s ease-in-out;
-  -moz-transition: opacity 1s ease-in-out;
-  -o-transition: opacity 1s ease-in-out;
-  transition: opacity 1s ease-in-out;
-}
 .goto_signup_btn, .submit_signup_btn {
   margin-top: 2%;
 }
 .signup_form input {
   margin-top: 2%;
+}
+.home_search {
+  height: 800px;
+  background: url('http://10.90.90.55/Vue_js/airbnb/src/assets/img/home_2.jpg') no-repeat center;
 }
 
 </style>

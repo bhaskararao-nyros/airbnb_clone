@@ -8,6 +8,7 @@ import Notifications from 'vue-notification'
 import Popover from 'vue-js-popover'
 import BootstrapVue from 'bootstrap-vue'
 import GSignInButton from 'vue-google-signin-button'
+import VueGeolocation from 'vue-browser-geolocation';
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -21,6 +22,7 @@ Vue.use(Notifications)
 Vue.use(Popover)
 Vue.use(BootstrapVue)
 Vue.use(GSignInButton)
+Vue.use(VueGeolocation);
 
 Vue.config.productionTip = false
 
