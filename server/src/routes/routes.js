@@ -51,21 +51,37 @@ router.use('/login',function(req, res){
 	}
 	if (req.body.login_type == 'custom') {
 		User.findOne({email: req.body.email},function(err, user){
+			console.log('user', user)
 			if(!err && user != null){
-				User.findOne({ email: req.body.email, password: req.body.password },function(err1, user1){
-		            if(!err1 && user1 != null){
-			            res.json({
-				           	status:'success',
-				           	message : 'Signin successfull',
-				           	data : user
-			            })
-			        } else {
-			        	res.json({
-							status:'fail',
-							message : 'Invalid password'
-						})
-			        }
-		        })
+				if (user.login_type == 'custom') {
+					User.findOne({ email: req.body.email, password: req.body.password },function(err1, user1){
+			            if(!err1 && user1 != null){
+				            res.json({
+					           	status:'success',
+					           	message : 'Signin successfull',
+					           	data : user
+				            })
+				        } else {
+				        	res.json({
+								status:'fail',
+								message : 'Invalid password'
+							})
+				        }
+			        })
+				}
+				if (user.login_type == 'google') {
+					res.json({
+						status:'fail',
+						message : 'This email registered using google'
+					})
+				}
+				if (user.login_type == 'facebook') {
+					res.json({
+						status:'fail',
+						message : 'This email registered using facebook'
+					})
+				}
+					
 			} else {
 				res.json({
 					status:'fail',

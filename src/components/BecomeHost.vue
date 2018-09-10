@@ -1,9 +1,9 @@
 <template>
   <div class="becomehost_div">
   <div class="head_component">
-  	<HeaderComponent />
+  	<HeaderComponent ref="headerComp" />
   </div>
-  	<div class="becomehost_blk">
+  	<div class="becomehost_blk" v-if="becomehost_block">
   		<b-row>
 	        <b-col>
 	        	<div class="fillout_blk_left">
@@ -14,7 +14,7 @@
   			<b-col>
   				<div class="fillout_blk">
   					<p class="fillout_title">Find out what top hosts earn in your area</p>
-		  			<input type="text" name="search" id="fillout_search" class="fillout_search"  @focus="filloutSearch()" ref="fillout_search" v-model="fillout_search_addr"><br>
+		  			<input type="text" name="search" id="fillout_search" class="fillout_search"  @focus="filloutSearch" ref="fillout_search"><br>
 		  			<select class="fillout_select" @change="changeGuests" v-model="guest_count">
 		  				<option v-for="guest in guests" :value="guest">{{ guest }} Guests</option>
 		  			</select><br>
@@ -22,6 +22,7 @@
 		  				<option v-for="room in rooms" :value="room.price">{{ room.name }}</option>
 		  			</select><br>
 		  			<p class="price_tag">&#x20B9;{{ total_price }}</p>
+		  			<b-button class="fillout_btn" variant="primary" @click="submitFillout">get started</b-button>
   				</div>
   			</b-col>
 	    </b-row>
@@ -41,10 +42,14 @@ export default {
     	guests:["2","4","6","8","10","12","14"],
     	rooms:[
     		{ name: 'Entire Place', value: 'entire', price: 15000 },
-    		{ name: 'Private Room', value: 'private', price: 7500 },
-    		{ name: 'Shared Room', value: 'shared', price: 10000 }
+    		{ name: 'Private Room', value: 'private', price: 10000 },
+    		{ name: 'Shared Room', value: 'shared', price: 7500 }
     	],
-    	total_price:''
+    	total_price: '',
+    	room_price: 15000,
+    	guest_count: 2,
+    	becomehost_block: true,
+    	fillout_search_addr: ''
     }
   },
   methods: {
@@ -64,13 +69,20 @@ export default {
   	calcTotalPrice(obj) {
   		var tot_val;
   		if (obj.name === 'guests') {
-  			tot_val = 3000 * obj.value + this.room_price
+  			tot_val = 3000 * parseInt(obj.value) + parseInt(this.room_price)
   		}
   		if (obj.name === 'rooms') {
-  			tot_val = 3000 * this.guest_count + obj.value
+  			tot_val = 3000 * parseInt(this.guest_count) + parseInt(obj.value)
   		}
 
   		this.total_price = tot_val
+  	},
+  	submitFillout () {
+  		if (localStorage.user) {
+  			this.becomehost_block = false
+  		} else {
+  			this.$refs.headerComp.openLoginModal()
+  		}
   	}
   },
   mounted () {
@@ -85,10 +97,12 @@ export default {
 	    geocoder.geocode({'latLng': latlng}, function(results, status) {
 	        if(status == google.maps.GeocoderStatus.OK) {
 	        	console.log(results[0]['formatted_address'])
-	        	document.getElementById('fillout_search').value = results[0]['formatted_address'];
+	        	document.getElementById('fillout_search').value = results[0]['formatted_address']
 	        };
 	    });
 	});
+
+	this.total_price = 3000 * parseInt(this.guest_count) + parseInt(this.room_price)
   },
   components: {
     HeaderComponent
@@ -132,6 +146,7 @@ export default {
 	margin-top: 3%;
 	font-size: 40px;
 	font-weight: bold;
+	opacity: 0.7;
 }
 .row {
 	margin: 0px !important;
@@ -146,6 +161,9 @@ export default {
 .fillout_blk_left h1 {
 	font-weight: bold;
 	width: 70%;
+}
+.fillout_btn {
+	width: 96%;
 }
 
 </style>
