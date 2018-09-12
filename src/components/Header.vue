@@ -19,8 +19,8 @@
 	      	<b-nav-item href="#" v-b-modal.signup_modal v-if="!userLoggedin">Sign up</b-nav-item>
 	      	<b-nav-item href="#" v-b-modal.login_modal v-if="!userLoggedin">Log in</b-nav-item>
 	      	<b-nav-item href="#" v-if="userLoggedin">
-	      		<b-dropdown id="ddown1" class="m-md-2 user_dropdown" no-caret>
-	      			<template slot="button-content">
+	      		<b-dropdown variant="link" size="sm" id="ddown1" class="m-md-2 user_dropdown" no-caret>
+	      			<template slot="button-content" >
 	      				<img src="../assets/img/user.png" class="user_img">
 	      			</template>
 				    <b-dropdown-item @click="onLogout">Logout</b-dropdown-item>
@@ -57,7 +57,7 @@
           <b-button variant="primary" block @click="openFbLoginDialog"><img src="../assets/img/fb.png" width="20px"> Login with Facebook</b-button><br>
           <b-button variant="danger" @click="onGoogleLogin" block><img src="../assets/img/google.png" width="20px"> Login with Gmail</b-button>
           <div class="signup_link">
-          	<span>Don't have an account? <a href="#" @click="clickSignupLink">Signup</a></span>
+          	<span>Don't have an account? <a @click="clickSignupLink">Signup</a></span>
           </div>
         </b-modal>
         <!-- Login Modal Component End -->
@@ -183,15 +183,15 @@ export default {
     },
     checkSignupState (response) {
       if (response.status === 'connected') {
-        FB.api('/me', { fields: 'first_name,last_name,name,email,picture.height(150).width(150)' }, function(profile) {
+        FB.api('/me', { fields: 'first_name,last_name,name,email,picture.height(150).width(150)' }, (profile) => {
           let data = { firstname: profile.first_name, lastname: profile.last_name, email:'fb_email', login_type: 'facebook', profile_pic: profile.picture.data.url, password: 'no_password' }
           AppService.fbSignup(data).then(res => {
             console.log('fb_signup', res.data)
             if (res.data.status === 'success') {
             	localStorage.setItem('user', JSON.stringify(res.data.data))
-            	this.$refs.signup_modal.hide()
             	let user = JSON.parse(localStorage.getItem('user'))
             	this.setUserData(user)
+            	this.$router.go()
             }
           })
         })
@@ -345,6 +345,7 @@ export default {
     },
     onLogout () {
     	localStorage.clear()
+    	this.$router.push('/')
     }
   },
   mounted () {
@@ -367,7 +368,7 @@ export default {
 	padding: 0rem 0rem !important;
 	background-color: transparent !important;
 }
-.home_nav_bar .ml-auto a {
+.home_nav_bar .ml-auto a.nav-link {
 	color: #fff;
 	font-size: 15px !important;
 	padding-right: 1rem !important;
@@ -379,7 +380,7 @@ export default {
 .home_nav_bar a.navbar-brand {
 	margin-left: 1%;
 }
-.home_nav_bar .ml-auto a:hover {
+.home_nav_bar .ml-auto a.nav-link:hover {
 	border-bottom: 2px solid;
 }
 .head_search {
@@ -411,5 +412,8 @@ export default {
 }
 .user_dropdown {
 	margin: 0px !important;
+}
+.dropdown-menu .show {
+	left: -85px !important;
 }
 </style>

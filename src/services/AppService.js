@@ -19,4 +19,7 @@ export default {
   customLogin (params) {
     return Api().post('/login', params)
   },
+  becomeHost (params) {
+    return Api().post('/becomehost', params)
+  }
 }

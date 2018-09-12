@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../models/user');
+const Host = require('../models/host');
 
 router.use('/signup',function(req, res){
 	console.log('|||||||| Signup |||||||||||', req.body)
@@ -91,5 +92,35 @@ router.use('/login',function(req, res){
 		})
 	}
 });
+
+router.use('/becomehost',function(req, res){
+	console.log('@@@@@@@@ becomehost @@@@@@@@@@@@')
+	User.findOne({location: req.body.location},function(err, host){
+		if(!err && host == null){
+			new Host({
+				location: req.body.location,
+				images: req.body.images,
+				price: req.body.total_price,
+				beds: req.body.beds_count,
+				washroom: req.body.shared_washroom,
+				kitchen: req.body.kitchen,
+				guests: req.body.guests,
+				room_type: req.body.room_type,
+			}).save(function(err1, host1){
+               res.json({
+               	status:'success',
+               	message : 'Listing created successfully',
+               	data : host1
+               })
+			})
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Listing with this location exists',	
+				data : host
+			})
+		}
+	})
+})
 
 module.exports = router;

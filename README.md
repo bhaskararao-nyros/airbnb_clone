@@ -1,4 +1,4 @@
-# gr-app
+# Flyhome app
 
 > A Vue.js project
 
