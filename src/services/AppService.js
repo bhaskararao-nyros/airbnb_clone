@@ -21,5 +21,8 @@ export default {
   },
   becomeHost (params) {
     return Api().post('/becomehost', params)
+  },
+  searchHomes (params) {
+    return Api().post('/search_home', params) 
   }
 }

@@ -9,8 +9,9 @@ const port = process.env.PORT || 8081;
 const route = require('./routes/routes');
 
 const app = express()
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(morgan('combined'))
-app.use(bodyParser.json())
+app.use(bodyParser.json({limit: '50mb', extended: true}))
 app.use(cors())
 
 

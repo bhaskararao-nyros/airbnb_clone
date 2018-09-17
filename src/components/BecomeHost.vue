@@ -182,6 +182,11 @@ export default {
   		var autocomplete = new google.maps.places.Autocomplete(
       (this.$refs.fillout_search),
       {types: ['geocode']})
+
+  		google.maps.event.addListener(autocomplete, 'place_changed', () => {
+      		const place = autocomplete.getPlace()
+      		this.property_location = place.formatted_address
+      	})
   	},
   	changeGuests (e) {
   		let obj = { name: 'guests', value: e.target.value }
@@ -203,7 +208,8 @@ export default {
   		this.total_price = tot_val
   	},
   	submitFillout () {
-  		this.property_location = document.getElementById('fillout_location').value
+
+  		// this.property_location = document.getElementById('fillout_location').value
   		if (localStorage.user) {
   			this.becomehost_block = false
   		} else {
@@ -236,6 +242,8 @@ export default {
 		        })
 		    }
   		}
+
+  		console.log('files array', this.image_url_arr)
   	},
   	submitListing () {
   		let kitchen_obj = { kitchen_avail:this.kitchen, shared_kitchen: this.shared_kitchen }
@@ -253,6 +261,8 @@ export default {
   		}
 
   		if (this.image_url_arr.length !== 0 && this.property_desc !== '') {
+  			let user = JSON.parse(localStorage.getItem('user'))
+
   			let data = {
   				guests: this.guest_count,
   				room_type: room_type,
@@ -262,7 +272,8 @@ export default {
   				shared_washroom: this.shared_washroom,
   				images: this.image_url_arr,
   				description: this.property_desc,
-  				total_price: this.total_price
+  				total_price: this.total_price,
+  				owner: user._id
   			}
   			
   			AppService.becomeHost(data).then(res => {

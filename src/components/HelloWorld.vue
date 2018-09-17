@@ -8,7 +8,11 @@
            placeholder="Try homes in India" 
            type="text"
            class="google-search-box"
+           v-model="home_search"
+           id="home_search_input" 
+           @keyup="onKeyUpSearch"
         />
+        <p class="null_search_msg" v-if="location_null_err">No listings found for this search....!</p>
       </div>
     </div>
     <div class="grid_blks">
@@ -525,21 +529,59 @@ export default {
   data() {
     return {
       mapLoaded: false,
+      location_arr: [],
       googleSignInParams: {
         client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com'
       },
+      location_null_err:false
     }
   },
   name: 'HelloWorld',
   props: {
   },
   methods: {
+    onKeyUpSearch () {
+      this.location_null_err = false
+    }
   },
   mounted () {
 
     var autocomplete = new google.maps.places.Autocomplete(
       (this.$refs.autocomplete),
       {types: ['geocode']})
+
+    google.maps.event.addListener(autocomplete, 'place_changed', () => {
+      const place = autocomplete.getPlace()
+      if ( place.formatted_address !== undefined ) {
+        // this.location_arr = []
+        // for (var i = 0; i < place.address_components.length; i++) {
+        //   this.location_arr.push({ name: place.address_components[i].long_name })
+        // }
+        let selected_location = { location: place.formatted_address }
+        AppService.searchHomes(selected_location).then(res => {
+          console.log('location response', res.data)
+          if (res.data.status === 'success') {
+            this.$router.push({ name: 'ListingsPage', params: { id: res.data } })
+          } else {
+            this.location_null_err = true
+          }
+        })
+      } else {
+        // this.location_arr = []
+        // for (var i = 0; i < places.length; i++) {
+        //   this.location_arr.push({ name: places[i] })
+        // }
+        let selected_location = { location: place.name }
+        AppService.searchHomes(selected_location).then(res => {
+          console.log('location response', res.data)
+          if (res.data.status === 'success') {
+            this.$router.push({ name: 'ListingsPage', params: { id: res.data } })
+          } else {
+            this.location_null_err = true
+          }
+        })
+      }
+    })
   },
   components: {
     HeaderComponent
@@ -607,6 +649,14 @@ export default {
 .home_search {
   height: 800px;
   background: url('http://10.90.90.55/Vue_js/airbnb/src/assets/img/home_2.jpg') no-repeat center;
+}
+.null_search_msg {
+  background-color: #fff;
+  color: red;
+  padding: 12px;
+  width: 60%;
+  margin: auto;
+  border-top: 1px solid #ccc;
 }
 
 </style>

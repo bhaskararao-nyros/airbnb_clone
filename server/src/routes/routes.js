@@ -95,29 +95,40 @@ router.use('/login',function(req, res){
 
 router.use('/becomehost',function(req, res){
 	console.log('@@@@@@@@ becomehost @@@@@@@@@@@@')
-	User.findOne({location: req.body.location},function(err, host){
-		if(!err && host == null){
-			new Host({
-				location: req.body.location,
-				images: req.body.images,
-				price: req.body.total_price,
-				beds: req.body.beds_count,
-				washroom: req.body.shared_washroom,
-				kitchen: req.body.kitchen,
-				guests: req.body.guests,
-				room_type: req.body.room_type,
-			}).save(function(err1, host1){
-               res.json({
+	new Host({
+		location: req.body.location,
+		images: req.body.images,
+		price: req.body.total_price,
+		beds: req.body.beds_count,
+		washroom: req.body.shared_washroom,
+		kitchen: req.body.kitchen,
+		guests: req.body.guests,
+		room_type: req.body.room_type,
+		owner: req.body.owner
+	}).save(function(err1, host1){
+       res.json({
+       	status:'success',
+       	message : 'Listing created successfully',
+       	data : host1
+       })
+	})
+})
+
+router.use('/search_home',function(req, res){
+	console.log('@@@@@@@@ search home @@@@@@@@@@@@', req.body)
+	Host.find({ location: req.body.location },function(err, host){
+		console.log('host length', host.length)
+		if(!err && host.length > 0){
+			res.json({
                	status:'success',
-               	message : 'Listing created successfully',
-               	data : host1
-               })
-			})
+               	message : 'Listings found',
+               	data : host
+            })
+            
 		} else {
 			res.json({
 				status:'fail',
-				message : 'Listing with this location exists',	
-				data : host
+				message : 'No listings found in this location'
 			})
 		}
 	})
