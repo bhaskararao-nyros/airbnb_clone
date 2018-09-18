@@ -245,7 +245,7 @@
             <b-carousel-slide>
               <img slot="img" class="w-100" width="1024" height="180"
              src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
+            </b-carousel-slide>
 
             <!-- Slides with custom text -->
             <b-carousel-slide>
@@ -552,34 +552,21 @@ export default {
 
     google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const place = autocomplete.getPlace()
+      console.log('google location', place.geometry.location.lat())
       if ( place.formatted_address !== undefined ) {
         // this.location_arr = []
         // for (var i = 0; i < place.address_components.length; i++) {
         //   this.location_arr.push({ name: place.address_components[i].long_name })
         // }
-        let selected_location = { location: place.formatted_address }
-        AppService.searchHomes(selected_location).then(res => {
-          console.log('location response', res.data)
-          if (res.data.status === 'success') {
-            this.$router.push({ name: 'ListingsPage', params: { id: res.data } })
-          } else {
-            this.location_null_err = true
-          }
-        })
+        let selected_location = place.formatted_address
+        this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
       } else {
         // this.location_arr = []
         // for (var i = 0; i < places.length; i++) {
         //   this.location_arr.push({ name: places[i] })
         // }
-        let selected_location = { location: place.name }
-        AppService.searchHomes(selected_location).then(res => {
-          console.log('location response', res.data)
-          if (res.data.status === 'success') {
-            this.$router.push({ name: 'ListingsPage', params: { id: res.data } })
-          } else {
-            this.location_null_err = true
-          }
-        })
+        let selected_location = place.name
+        this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
       }
     })
   },

@@ -24,5 +24,8 @@ export default {
   },
   searchHomes (params) {
     return Api().post('/search_home', params) 
+  },
+  getSingleHome (params) {
+    return Api().post('/get_single_home', params) 
   }
 }

@@ -9,6 +9,7 @@ var hostSchema = new mongoose.Schema({
   kitchen: { type: Object },
   guests: { type: Number },
   room_type: { type: String },
+  map_coordinates: { type: Object },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     }, {
   timestamps: true

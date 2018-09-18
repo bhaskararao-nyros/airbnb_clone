@@ -104,7 +104,8 @@ router.use('/becomehost',function(req, res){
 		kitchen: req.body.kitchen,
 		guests: req.body.guests,
 		room_type: req.body.room_type,
-		owner: req.body.owner
+		owner: req.body.owner,
+		map_coordinates:req.body.map_coordinates
 	}).save(function(err1, host1){
        res.json({
        	status:'success',
@@ -115,9 +116,8 @@ router.use('/becomehost',function(req, res){
 })
 
 router.use('/search_home',function(req, res){
-	console.log('@@@@@@@@ search home @@@@@@@@@@@@', req.body)
+	console.log('@@@@@@@@ search home @@@@@@@@@@@@')
 	Host.find({ location: req.body.location },function(err, host){
-		console.log('host length', host.length)
 		if(!err && host.length > 0){
 			res.json({
                	status:'success',
@@ -131,6 +131,28 @@ router.use('/search_home',function(req, res){
 				message : 'No listings found in this location'
 			})
 		}
+	
+
+	})
+})
+
+router.use('/get_single_home',function(req, res){
+	console.log('@@@@@@@@ get single home @@@@@@@@@@@@')
+	Host.findOne({ _id: req.body.id },function(err, host){
+		if(!err && host != null){
+			res.json({
+               	status:'success',
+               	message : 'Host details retrived',
+               	data : host
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Failed to retrive host'
+			})
+		}
+	
+
 	})
 })
 

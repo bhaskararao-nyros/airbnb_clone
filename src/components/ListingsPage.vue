@@ -15,7 +15,7 @@
 		        </b-col>
 		        <b-col class="listings_right_blk">
 		        <div class="view_more_btn">
-		        	<b-button  variant="outline-success" size="sm">View More</b-button>	
+		        	<b-button :href="'#/full-details/' + list._id"  variant="outline-success" size="sm">View More</b-button>	
 		        </div>
 		        
 		        <p>About :</p>
@@ -55,8 +55,16 @@ export default {
   	
   },
   mounted () {
-  	console.log('params', this.$route.params.id.data)
-  	this.listings = this.$route.params.id.data
+  	console.log('params', this.$route.params.location)
+  	let location = { location: this.$route.params.location }
+  	AppService.searchHomes(location).then(res => {
+      console.log('location response', res.data)
+      if (res.data.status === 'success') {
+        this.listings = res.data.data
+      } else {
+        this.location_null_err = true
+      }
+    })
 
   },
   components: {

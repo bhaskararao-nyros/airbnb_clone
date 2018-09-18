@@ -3,8 +3,16 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import BecomeHost from '@/components/BecomeHost'
 import ListingsPage from '@/components/ListingsPage'
+import FullDetailsPage from '@/components/FullDetailsPage'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(Router)
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyA2LmiHomsV8B4M4GXgPxqcTlk6hLSiT9E',
+    libraries: 'places',
+  },
+})
 
 export default new Router({
   routes: [
@@ -19,9 +27,16 @@ export default new Router({
       component: BecomeHost
     },
     {
-      path: '/listings/:id',
+      path: '/listings/:location',
       name: 'ListingsPage',
-      component: ListingsPage
+      component: ListingsPage,
+      props: true
+    },
+    {
+      path: '/full-details/:id',
+      name: 'FullDetailsPage',
+      component: FullDetailsPage,
+      props: true
     }
   ]
 })

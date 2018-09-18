@@ -174,7 +174,8 @@ export default {
     	image_url_arr: [],
     	property_desc:'',
     	images_err: false,
-    	property_location:''
+    	property_location:'',
+    	map_coordinates:{ lat:'', lng: ''}
     }
   },
   methods: {
@@ -186,6 +187,7 @@ export default {
   		google.maps.event.addListener(autocomplete, 'place_changed', () => {
       		const place = autocomplete.getPlace()
       		this.property_location = place.formatted_address
+      		this.map_coordinates = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng()}
       	})
   	},
   	changeGuests (e) {
@@ -273,7 +275,8 @@ export default {
   				images: this.image_url_arr,
   				description: this.property_desc,
   				total_price: this.total_price,
-  				owner: user._id
+  				owner: user._id,
+  				map_coordinates: this.map_coordinates
   			}
   			
   			AppService.becomeHost(data).then(res => {
