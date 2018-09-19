@@ -1,8 +1,8 @@
 <template>
-  	<div class="full_details_page">
-	  	<div class="head_component">
-	  		<HeaderComponent ref="headerComp" />
-	  	</div>
+<div class="full_details_page">
+	<div class="head_component">
+		<HeaderComponent ref="headerComp" />
+	</div>
 	  	<div class="full_details_div">
 	  		<b-carousel id="carousel1"
               style="text-shadow: 1px 1px 2px #333;"
@@ -10,7 +10,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
           	>
 
 	            <!-- Text slides with image -->
@@ -35,11 +34,25 @@
 		        				<img class="bed_img" src="../assets/img/guest.jpg">
 		        			</span>
 		        		</li>
-		        		<li> {{ host.room_type }}</li>
-		        		<li> {{ host.price }}</li>
-		        		<li> {{ host.washroom === 'no' ? 'Individual washroom' : 'Shared washroom' }}</li>
-		        		<li> {{ host.kitchen.kitchen_avail !== 'no' && host.kitchen.shared_kitchen === 'yes' ? 'Shared kitchen available' : 'No kitchen available' }}</li>
-		        		<li> {{ host.location }}</li>
+		        		<li>
+		        			<p class="sleeping_head">Host Type</p>
+		        			<span>
+		        			{{ host.room_type }} &nbsp;&nbsp;
+		        				<img v-if="host.room_type === 'Shared Room'" class="bed_img" src="../assets/img/shared.png">
+		        				<img v-if="host.room_type === 'Private Room'" class="bed_img" src="../assets/img/single.png">
+		        				<img v-if="host.room_type === 'Entire Place'" class="bed_img" src="../assets/img/house.png">
+		        			</span>
+		        		</li>
+		        		<li> <p class="sleeping_head">Price</p><span class="price_tag">&#x20B9; {{ host.price }}</span></li>
+		        		<li> <p class="sleeping_head">Amentities</p>
+	        				<p>{{ host.washroom === 'no' ? 'Individual washroom' : 'Shared washroom' }}</p>
+	        				<p>{{ kitechCal }}</p>
+	        				<p>Free Wi-Fi available</p>
+		        		</li>
+		        		<li>
+		        			<p class="sleeping_head">Location</p>
+		        		 	{{ host.location }}
+		        		</li>
 		        	</ul>
 		        </b-col>
 		        <b-col class="map_blk">
@@ -47,15 +60,13 @@
 					  :center="map_coordinates"
 					  :zoom="15"
 					  map-type-id="terrain"
-					  style="width: 100%; height: 500px"
+					  style="width: 100%; height: 650px"
 					>
 					  <GmapMarker
-					    :key="index"
-					    v-for="(m, index) in markers"
-					    :position="m.position"
+					    :position="map_coordinates"
 					    :clickable="true"
 					    :draggable="true"
-					    @click="center=m.position"
+					    @click="center=map_coordinates"
 					  />
 					</GmapMap>
 		        </b-col>
@@ -75,7 +86,8 @@ export default {
     return {
     	host:[],
     	host_images:[],
-    	map_coordinates:{}
+    	map_coordinates:{},
+    	markers:[{ lat:'16.9754085', lng:'82.23523969999997' }]
     }
   },
   methods: {
@@ -91,6 +103,21 @@ export default {
       this.host = res.data.data
     })
   },
+  computed: {
+  	kitechCal () {
+  		if (this.host.kitchen !== undefined) {
+	  		if (this.host.kitchen.kitchen_avail === 'yes') {
+	  			if (this.host.kitchen.shared_kitchen === 'yes') {
+	  				return "Shared kitchen available"
+	  			} else {
+	  				return "Individual kitchen available"
+	  			}
+	  		} else {
+	  			return "No kitchen available"
+	  		}
+	  	}
+  	}
+  },
   components: {
     HeaderComponent
   }
@@ -104,6 +131,7 @@ export default {
 .full_details_div {
 	margin-right: 5%;
 	margin-left: 5%;
+	margin-top: 1%;
 }
 .map_blk {
 	padding: 5px;
@@ -125,6 +153,12 @@ export default {
 	margin-right: 1%;
 	border: 1px solid green;
 	padding: 5px;
+}
+.price_tag {
+	padding: 5px;
+	font-weight: bold;
+	background-color: #fff;
+	border: 1px solid orange;
 }
 
 </style>

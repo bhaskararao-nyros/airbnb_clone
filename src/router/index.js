@@ -10,8 +10,8 @@ Vue.use(Router)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyA2LmiHomsV8B4M4GXgPxqcTlk6hLSiT9E',
-    libraries: 'places',
-  },
+    libraries: 'places'
+  }
 })
 
 export default new Router({

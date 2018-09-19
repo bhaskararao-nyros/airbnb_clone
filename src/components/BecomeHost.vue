@@ -1,8 +1,8 @@
 <template>
-  <div class="becomehost_div">
-  <div class="head_component">
-  	<HeaderComponent ref="headerComp" />
-  </div>
+<div class="becomehost_div">
+<div class="head_component">
+	<HeaderComponent ref="headerComp" />
+</div>
   	<div class="becomehost_blk" v-if="becomehost_block">
   		<b-row>
 	        <b-col>
@@ -28,6 +28,14 @@
 	    </b-row>
   	</div>
   	<div class="becomehost_fillout" v-if="!becomehost_block">
+  		<div class="alert_blk">
+  			<b-alert variant="danger"
+             	dismissible
+             	:show="showDismissibleAlert"
+             	@dismissed="showDismissibleAlert=false">
+	      		Listing created successfully
+	    	</b-alert>
+  		</div>
   		<h3 class="text-center list_heading">Listing Creation</h3>
   		<b-row>
 	        <b-col>
@@ -175,7 +183,8 @@ export default {
     	property_desc:'',
     	images_err: false,
     	property_location:'',
-    	map_coordinates:{ lat:'', lng: ''}
+    	map_coordinates:{ lat:'', lng: ''},
+    	showDismissibleAlert: false
     }
   },
   methods: {
@@ -273,7 +282,7 @@ export default {
   				kitchen: kitchen_obj,
   				shared_washroom: this.shared_washroom,
   				images: this.image_url_arr,
-  				description: this.property_desc,
+  				about: this.property_desc,
   				total_price: this.total_price,
   				owner: user._id,
   				map_coordinates: this.map_coordinates
@@ -281,6 +290,9 @@ export default {
   			
   			AppService.becomeHost(data).then(res => {
   				console.log('becomehost res', res.data)
+  				if (res.data.status === 'success') {
+  					this.showDismissibleAlert = true
+  				}
   			})
   			
   		}
@@ -316,13 +328,15 @@ export default {
 	background-color: #a4a77f;
 }
 .becomehost_blk {
-	background: url('../assets/img/home_5.png') no-repeat center;
+	/*background: url('../assets/img/home_5.png') no-repeat center;*/
+	background-color: #dcdec5;
 	height: 723px;
 }
 .fillout_blk {
 	background-color: #fff;
 	padding: 8%;
 	margin: 15%;
+	border: 1px solid #696e35;
 }
 .fillout_search {
 	width: 100%;
@@ -354,7 +368,7 @@ export default {
 }
 .fillout_blk_left {
 	margin: 40% 0% 0% 15%;
-	color: #fff;
+	color: #696e35;
 }
 .fillout_blk_left p {
 	font-weight: bold;
@@ -412,6 +426,9 @@ export default {
 .description_txt {
 	border: 1px solid #ccc;
 	padding: 2%;
+}
+.alert_blk {
+	text-align: center;
 }
 
 </style>

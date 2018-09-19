@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Host = require('../models/host');
 
 router.use('/signup',function(req, res){
-	console.log('|||||||| Signup |||||||||||', req.body)
+	console.log('|||||||| Signup |||||||||||')
 	User.findOne({email: req.body.email},function(err, user){
 		if(!err && user == null){
 			new User({
@@ -31,6 +31,22 @@ router.use('/signup',function(req, res){
 		}
 	})
 });
+
+router.use('/check_custom_signup_email',function(req, res){
+	console.log('|||||||| checking email |||||||||||')
+	User.findOne({email: req.body.email},function(err, user){
+		if(!err && user == null){
+			res.json({
+				status:'success'
+			})
+		} else {
+			res.json({
+				status:'fail',
+				message : 'User with this email already exists'
+			})
+		}
+	});
+})
 
 router.use('/login',function(req, res){
 	console.log('||||||||||| Login |||||||||||||', req.body)
@@ -105,7 +121,8 @@ router.use('/becomehost',function(req, res){
 		guests: req.body.guests,
 		room_type: req.body.room_type,
 		owner: req.body.owner,
-		map_coordinates:req.body.map_coordinates
+		map_coordinates:req.body.map_coordinates,
+		about:req.body.about
 	}).save(function(err1, host1){
        res.json({
        	status:'success',

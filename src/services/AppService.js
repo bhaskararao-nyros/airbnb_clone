@@ -27,5 +27,8 @@ export default {
   },
   getSingleHome (params) {
     return Api().post('/get_single_home', params) 
+  },
+  checkEmail (params) {
+    return Api().post('/check_custom_signup_email', params) 
   }
 }

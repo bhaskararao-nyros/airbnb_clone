@@ -1,8 +1,8 @@
 <template>
-  	<div class="listings">
-	  	<div class="head_component">
-	  		<HeaderComponent ref="headerComp" />
-	  	</div>
+<div class="listings">
+	<div class="head_component">
+		<HeaderComponent ref="headerComp" />
+	</div>
 	  	<div class="listings_blk">
 		  	<h4 class="listing_head">Searched for homes in <span>{{ listings[0].location }}</span></h4>
 		  	<b-row class="listing_row" v-for="list in listings" :key="list._id">

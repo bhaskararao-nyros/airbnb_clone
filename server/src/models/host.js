@@ -10,7 +10,8 @@ var hostSchema = new mongoose.Schema({
   guests: { type: Number },
   room_type: { type: String },
   map_coordinates: { type: Object },
-  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+  about: { type: String },
+  owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     }, {
   timestamps: true
 });

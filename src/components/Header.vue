@@ -1,10 +1,8 @@
 <template>
   <div>
-  	<b-navbar class="home_nav_bar" toggleable="md" type="dark" variant="info">
-
-	  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-
-	  <b-navbar-brand href="#/"><img src="../assets/img/logo.png" width="40px"></b-navbar-brand>
+	<b-navbar class="home_nav_bar" toggleable="md" type="dark" variant="info">
+  <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+  <b-navbar-brand href="#/"><img src="../assets/img/logo.png" width="40px"></b-navbar-brand>
 
 	  <b-collapse is-nav id="nav_collapse">
 	  	<b-navbar-nav>
@@ -13,11 +11,9 @@
 
 	    <!-- Right aligned nav items -->
 	    <b-navbar-nav class="ml-auto">
-	    	<b-nav-item href="#/become_host">Become a host</b-nav-item>
-	      	<b-nav-item href="#">Earn credit</b-nav-item>
-	      	<b-nav-item href="#">Help</b-nav-item>
-	      	<b-nav-item href="#" v-b-modal.signup_modal v-if="!userLoggedin">Sign up</b-nav-item>
-	      	<b-nav-item href="#" v-b-modal.login_modal v-if="!userLoggedin">Log in</b-nav-item>
+	    	<b-nav-item class="nav_item" href="#/become_host">Become a host</b-nav-item>
+	      	<b-nav-item class="nav_item" href="#" v-b-modal.signup_modal v-if="!userLoggedin">Sign up</b-nav-item>
+	      	<b-nav-item class="nav_item" href="#" v-b-modal.login_modal v-if="!userLoggedin">Log in</b-nav-item>
 	      	<b-nav-item href="#" v-if="userLoggedin">
 	      		<b-dropdown variant="link" size="sm" id="ddown1" class="m-md-2 user_dropdown" no-caret>
 	      			<template slot="button-content" >
@@ -72,7 +68,7 @@
                 placeholder="Email address"
                 v-model="signup_email">
               </b-form-input>
-              <span class="text-danger" v-if="email_err"> *email required</span>
+              <span class="text-danger" v-if="email_err"> {{ email_err_msg }}</span>
             <b-button block variant="success" class="goto_signup_btn" @click="goToSignup">Next</b-button><br>
             </form>
             <p class="text-center">------------------------------  or  -----------------------------</p>
@@ -135,6 +131,7 @@ export default {
         custom_signup: false,
         signup: { password: '', cnfpass: '', firstname: '', lastname: '', login_type: 'custom',profile_pic: null },
         email_err: false,
+        email_err_msg: '*email required',
         signup_email: '',
         cnf_pass_err_msg: 'Confirm password required',
         pass_err: false,
@@ -144,7 +141,8 @@ export default {
         login_email_err: false,
         login_pass_err: false,
         login_err: '',
-        userLoggedin: false
+        userLoggedin: false,
+        showDismissibleAlert: false
     }
   },
   methods: {
@@ -153,6 +151,26 @@ export default {
   		var autocomplete = new google.maps.places.Autocomplete(
 	      (this.$refs.head_autocomplete),
 	      {types: ['geocode']})
+
+        google.maps.event.addListener(autocomplete, 'place_changed', () => {
+          const place = autocomplete.getPlace()
+          console.log('google location', place.geometry.location.lat())
+          if ( place.formatted_address !== undefined ) {
+            // this.location_arr = []
+            // for (var i = 0; i < place.address_components.length; i++) {
+            //   this.location_arr.push({ name: place.address_components[i].long_name })
+            // }
+            let selected_location = place.formatted_address
+            this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
+          } else {
+            // this.location_arr = []
+            // for (var i = 0; i < places.length; i++) {
+            //   this.location_arr.push({ name: places[i] })
+            // }
+            let selected_location = place.name
+            this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
+          }
+        })
   	},
   	normalSearch () {
   		document.getElementById('head_search').style.width = "160%";
@@ -284,12 +302,21 @@ export default {
     	}
     },
     goToSignup () {
-      if (this.signup_email === '' || this.signup_email === undefined || this.signup_email === null){
+      if (this.signup_email === ''){
         this.email_err = true
       } else {
-        this.custom_signup = true
-        this.email_err = false
-        this.signup.email = this.signup_email
+        let email = { email: this.signup_email }
+        AppService.checkEmail(email).then(res => {
+            console.log('checking email res', res.data)
+            if (res.data.status === 'fail') {
+                this.email_err = true
+                this.email_err_msg = res.data.message
+            } else {
+                this.custom_signup = true
+                this.email_err = false
+                this.signup.email = this.signup_email
+            }
+        })
       }
       
     },
@@ -323,8 +350,14 @@ export default {
       }
       if (!this.pass_err && !this.cnf_pass_err && !this.fn_err && !this.ln_err) {
         AppService.customSignup(this.signup).then(res => {
-          this.$refs.signup_modal.hide()
-          console.log('custom_res', res)
+            this.$refs.signup_modal.hide()
+            console.log('custom_res', res)
+            if (res.data.status === 'success') {
+                localStorage.setItem('user', JSON.stringify(res.data.data))
+                let user = JSON.parse(localStorage.getItem('user'))
+                this.setUserData(user)
+                this.$router.go()
+            }
         })
       }
     },
@@ -341,7 +374,7 @@ export default {
     	}
     },
     setUserData (user) {
-    	console.log('user data', user)
+    	// console.log('user data', user)
     },
     onLogout () {
     	localStorage.clear()
@@ -350,7 +383,7 @@ export default {
   },
   mounted () {
 
-  	console.log('local user', localStorage.getItem('user'))
+  	// console.log('local user', localStorage.getItem('user'))
 
   	this.fbInit()
   	this.checkUserSession()
@@ -366,22 +399,27 @@ export default {
 <style scoped>
 .home_nav_bar {
 	padding: 0rem 0rem !important;
-	background-color: transparent !important;
+	background-color: #a4a77f !important;
 }
 .home_nav_bar .ml-auto a.nav-link {
 	color: #fff;
 	font-size: 15px !important;
 	padding-right: 1rem !important;
-	padding-top: 27px;
-	padding-bottom: 27px;
-	border-bottom: 2px solid transparent;
+	padding-top: 23px;
+	padding-bottom: 23px;
 	font-weight: bold;
 }
 .home_nav_bar a.navbar-brand {
 	margin-left: 1%;
 }
-.home_nav_bar .ml-auto a.nav-link:hover {
-	border-bottom: 2px solid;
+.home_nav_bar .ml-auto li:hover {
+	border-bottom: 2px solid #fff;
+}
+.home_nav_bar .ml-auto li {
+  border-bottom: 2px solid transparent;
+}
+.home_nav_bar .ml-auto li.nav_item {
+    padding-top: 2%;
 }
 .head_search {
 	padding: 10px;
@@ -413,7 +451,10 @@ export default {
 .user_dropdown {
 	margin: 0px !important;
 }
-.dropdown-menu .show {
-	left: -85px !important;
+.navbar .dropdown-menu a {
+    padding: 0px 0px 0px 10px;
+}
+div[style] {
+    left: -106px !important;
 }
 </style>

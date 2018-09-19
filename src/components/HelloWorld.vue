@@ -32,7 +32,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -72,7 +71,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -114,7 +112,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -154,7 +151,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -196,7 +192,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -236,7 +231,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -278,7 +272,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -318,7 +311,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -360,7 +352,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -400,7 +391,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -442,7 +432,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -482,7 +471,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              v-model="slide"
               @sliding-start="onSlideStart"
               @sliding-end="onSlideEnd"
           >
@@ -554,19 +542,24 @@ export default {
       const place = autocomplete.getPlace()
       console.log('google location', place.geometry.location.lat())
       if ( place.formatted_address !== undefined ) {
-        // this.location_arr = []
-        // for (var i = 0; i < place.address_components.length; i++) {
-        //   this.location_arr.push({ name: place.address_components[i].long_name })
-        // }
-        let selected_location = place.formatted_address
-        this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
+        let location = { location: place.formatted_address }
+        AppService.searchHomes(location).then(res => {
+          if (res.data.status === 'success') {
+            this.$router.push({ name: 'ListingsPage', params: { location: place.formatted_address } })
+          } else {
+            this.location_null_err = true
+          }
+        })
+        
       } else {
-        // this.location_arr = []
-        // for (var i = 0; i < places.length; i++) {
-        //   this.location_arr.push({ name: places[i] })
-        // }
-        let selected_location = place.name
-        this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
+        let location = { location: place.name }
+        AppService.searchHomes(location).then(res => {
+          if (res.data.status === 'success') {
+            this.$router.push({ name: 'ListingsPage', params: { location: place.name } })
+          } else {
+            this.location_null_err = true
+          }
+        })
       }
     })
   },
@@ -584,7 +577,8 @@ export default {
   padding: 13px;
   font-size: 18px;
   font-weight: bold;
-  border: none;
+  border: 1px solid #676c2b;
+  border-radius: 0px;
 }
 .autocomplete_div {
   margin-top: 13%;
@@ -592,10 +586,11 @@ export default {
 .autocomplete_head {
   display: block;
   margin-left: 20%;
-  color: #fff;
   font-weight: bold;
   font-size: 44px;
   width: 56%;
+  opacity: 0.8;
+  color: #676c2b;
 }
 .airbnb_plus {
   font-size: 20px;
@@ -635,7 +630,8 @@ export default {
 }
 .home_search {
   height: 800px;
-  background: url('http://10.90.90.55/Vue_js/airbnb/src/assets/img/home_2.jpg') no-repeat center;
+  /*background: url('http://10.90.90.55/Vue_js/airbnb/src/assets/img/home_2.jpg') no-repeat center;*/
+  background-color: #dcdec5;
 }
 .null_search_msg {
   background-color: #fff;
