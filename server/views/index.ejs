@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin</title>
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css/custom.css">
+<body>
+    <div class="admin_row">
+        <div class="col-md-3">
+            <% include sidebar.ejs %>
+        </div>
+        <div class="col-md-9">
+            <% include navbar.ejs %>
+            <div class="content_blk">
+                <div class="col-md-6">
+                    <div class="users_blk">
+                        <div>
+                            <span class="users_head">Users</span>
+                            <span class="users_count"><%= users_count %></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="listings_blk">
+                        <div>
+                            <span class="listings_head">Listings</span>
+                            <span class="users_count"><%= listings_count %></span>
+                        </div>
+                        <div style="margin-top: 3%;">
+                            <span style="color: #398a39;font-size: 18px;">Approved: <%= approved_listings.length %></span><br>
+                            <span style="color: indianred;font-size: 18px;">Unapproved: <%= unapproved_listings.length %></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

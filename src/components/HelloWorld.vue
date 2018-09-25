@@ -8,7 +8,6 @@
            placeholder="Try homes in India" 
            type="text"
            class="google-search-box"
-           v-model="home_search"
            id="home_search_input" 
            @keyup="onKeyUpSearch"
         />
@@ -32,8 +31,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -71,8 +69,6 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
           >
 
             <!-- Text slides with image -->
@@ -112,8 +108,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -151,8 +146,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -192,8 +186,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -231,8 +224,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -272,8 +264,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -311,8 +302,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -352,8 +342,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -391,8 +380,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -432,8 +420,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->
@@ -471,8 +458,7 @@
               indicators
               background="#ababab"
               :interval="4000"
-              @sliding-start="onSlideStart"
-              @sliding-end="onSlideEnd"
+              
           >
 
             <!-- Text slides with image -->

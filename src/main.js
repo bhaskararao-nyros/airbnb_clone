@@ -22,7 +22,7 @@ Vue.use(Notifications)
 Vue.use(Popover)
 Vue.use(BootstrapVue)
 Vue.use(GSignInButton)
-Vue.use(VueGeolocation);
+Vue.use(VueGeolocation)
 
 Vue.config.productionTip = false
 

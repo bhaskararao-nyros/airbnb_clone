@@ -19,6 +19,7 @@
 	      			<template slot="button-content" >
 	      				<img src="../assets/img/user.png" class="user_img">
 	      			</template>
+            <b-dropdown-item @click="goToUserProfile">Profile</b-dropdown-item>
 				    <b-dropdown-item @click="onLogout">Logout</b-dropdown-item>
 			  	</b-dropdown>
 	      	</b-nav-item>
@@ -147,7 +148,7 @@ export default {
   },
   methods: {
   	expandSearch () {
-  		document.getElementById('head_search').style.width = "260%";
+  		document.getElementById('head_search').style.width = "260%"
   		var autocomplete = new google.maps.places.Autocomplete(
 	      (this.$refs.head_autocomplete),
 	      {types: ['geocode']})
@@ -379,6 +380,9 @@ export default {
     onLogout () {
     	localStorage.clear()
     	this.$router.push('/')
+    },
+    goToUserProfile () {
+      this.$router.push('/user_profile')
     }
   },
   mounted () {

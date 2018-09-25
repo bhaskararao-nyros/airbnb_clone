@@ -11,6 +11,7 @@ var hostSchema = new mongoose.Schema({
   room_type: { type: String },
   map_coordinates: { type: Object },
   about: { type: String },
+  approved: { type: Number },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'user' },
     }, {
   timestamps: true

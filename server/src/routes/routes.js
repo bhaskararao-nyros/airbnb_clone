@@ -136,10 +136,16 @@ router.use('/search_home',function(req, res){
 	console.log('@@@@@@@@ search home @@@@@@@@@@@@')
 	Host.find({ location: req.body.location },function(err, host){
 		if(!err && host.length > 0){
+			let approved_listings = [];
+			for (var i = 0; i < host.length; i++) {
+				if (host[i].approved === 1) {
+					approved_listings.push(host[i])
+				}
+			}
 			res.json({
                	status:'success',
                	message : 'Listings found',
-               	data : host
+               	data : approved_listings
             })
             
 		} else {

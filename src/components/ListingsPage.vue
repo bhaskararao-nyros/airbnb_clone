@@ -4,7 +4,7 @@
 		<HeaderComponent ref="headerComp" />
 	</div>
 	  	<div class="listings_blk">
-		  	<h4 class="listing_head">Searched for homes in <span>{{ listings[0].location }}</span></h4>
+		  	<h4 class="listing_head">Searched for homes in <span>{{ location_address }}</span></h4>
 		  	<b-row class="listing_row" v-for="list in listings" :key="list._id">
 		        <b-col>
 		        	<b-img :src="list.images[0].url" fluid alt="Responsive image" class="listing_image" />
@@ -48,7 +48,8 @@ export default {
   name: 'ListingsPage',
   data () {
     return {
-    	listings:[]
+    	listings:[],
+    	location_address:''
     }
   },
   methods: {
@@ -58,9 +59,16 @@ export default {
   	console.log('params', this.$route.params.location)
   	let location = { location: this.$route.params.location }
   	AppService.searchHomes(location).then(res => {
-      console.log('location response', res.data)
+      console.log('location response', res.data.data)
       if (res.data.status === 'success') {
-        this.listings = res.data.data
+      	if (res.data.data.length > 0) {
+      		this.listings = res.data.data
+        	this.location_address = res.data.data[0].location
+      	} else {
+      		alert("No listings in this location");
+      		this.$router.push('/');
+      	}
+        
       } else {
         this.location_null_err = true
       }

@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import BecomeHost from '@/components/BecomeHost'
 import ListingsPage from '@/components/ListingsPage'
 import FullDetailsPage from '@/components/FullDetailsPage'
+import UserProfile from '@/components/UserProfile'
 import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(Router)
@@ -37,6 +38,11 @@ export default new Router({
       name: 'FullDetailsPage',
       component: FullDetailsPage,
       props: true
+    },
+    {
+      path: '/user_profile',
+      name: 'UserProfile',
+      component: UserProfile
     }
   ]
 })
