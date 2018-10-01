@@ -61,7 +61,7 @@ router.use('/login',function(req, res){
 			} else {
 				res.json({
 					status:'fail',
-					message : 'Login failed'
+					message : 'Email not registered'
 				})
 			}
 		})
@@ -174,8 +174,52 @@ router.use('/get_single_home',function(req, res){
 				message : 'Failed to retrive host'
 			})
 		}
-	
+	})
+})
 
+router.use('/update_user',function(req, res){
+	console.log('@@@@@@@@ update user @@@@@@@@@@@@')
+	User.update({ _id: req.body._id }, req.body, function(err, user) {
+		if(!err && user.nModified == 1) {
+			User.findOne({ _id: req.body._id },function(err1, user1){
+				if(!err1 && user1 != null) {
+					res.json({
+		               	status:'success',
+		               	message : 'User details updated',
+		               	data : user1
+		            })
+				} else {
+					res.json({
+						status:'fail',
+						message : 'Failed to update user'
+					})
+				}
+			})
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Email registered by another user'
+			})
+		}
+	})
+})
+
+router.use('/get_user_listings',function(req, res){
+	console.log('@@@@@@@@ get user listings @@@@@@@@@@@@')
+	Host.find({ owner: req.body.id },function(err, listings){
+		if(!err && listings.length > 0) {
+			res.json({
+               	status:'success',
+               	message : 'Listings found',
+               	data : listings
+            })
+            
+		} else {
+			res.json({
+				status:'fail',
+				message : 'No listings found for this user'
+			})
+		}
 	})
 })
 

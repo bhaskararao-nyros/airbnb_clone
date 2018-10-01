@@ -44,7 +44,7 @@
                                 </td>
                                 <td><%= listing[i].owner.firstname %> <%= listing[i].owner.lastname %></td>
                                 <td><%= listing[i].guests %></td>
-                                <td><%= listing[i].room_type %></td>
+                                <td><%= listing[i].room_type %> </td>
                                 <td><%= listing[i].about %></td>
                                 <% if (listing[i].approved === 0) { %>
                                     <td><button onclick="approveListing('<%= listing[i]._id %>')" class="btn btn-success btn-xs">Approve</button></td>

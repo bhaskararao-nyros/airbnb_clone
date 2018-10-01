@@ -30,5 +30,11 @@ export default {
   },
   checkEmail (params) {
     return Api().post('/check_custom_signup_email', params) 
+  },
+  updateUser (params) {
+    return Api().post('/update_user', params) 
+  },
+  getUserListings (params) {
+    return Api().post('/get_user_listings', params) 
   }
 }

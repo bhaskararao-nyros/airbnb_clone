@@ -5,6 +5,8 @@ import BecomeHost from '@/components/BecomeHost'
 import ListingsPage from '@/components/ListingsPage'
 import FullDetailsPage from '@/components/FullDetailsPage'
 import UserProfile from '@/components/UserProfile'
+import EditUserListing from '@/components/EditUserListing'
+
 import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(Router)
@@ -43,6 +45,11 @@ export default new Router({
       path: '/user_profile',
       name: 'UserProfile',
       component: UserProfile
+    },
+    {
+      path: '/edit_user_listing',
+      name: 'EditUserListing',
+      component: EditUserListing
     }
   ]
 })

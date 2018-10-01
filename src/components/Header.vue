@@ -17,7 +17,8 @@
 	      	<b-nav-item href="#" v-if="userLoggedin">
 	      		<b-dropdown variant="link" size="sm" id="ddown1" class="m-md-2 user_dropdown" no-caret>
 	      			<template slot="button-content" >
-	      				<img src="../assets/img/user.png" class="user_img">
+                <img v-if="user_icon !== '' " :src="user_icon" class="user_img">
+	      				<img v-else src="../assets/img/user.png" class="user_img">
 	      			</template>
             <b-dropdown-item @click="goToUserProfile">Profile</b-dropdown-item>
 				    <b-dropdown-item @click="onLogout">Logout</b-dropdown-item>
@@ -143,7 +144,8 @@ export default {
         login_pass_err: false,
         login_err: '',
         userLoggedin: false,
-        showDismissibleAlert: false
+        showDismissibleAlert: false,
+        user_icon:''
     }
   },
   methods: {
@@ -156,18 +158,11 @@ export default {
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
           const place = autocomplete.getPlace()
           console.log('google location', place.geometry.location.lat())
+
           if ( place.formatted_address !== undefined ) {
-            // this.location_arr = []
-            // for (var i = 0; i < place.address_components.length; i++) {
-            //   this.location_arr.push({ name: place.address_components[i].long_name })
-            // }
             let selected_location = place.formatted_address
             this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
           } else {
-            // this.location_arr = []
-            // for (var i = 0; i < places.length; i++) {
-            //   this.location_arr.push({ name: places[i] })
-            // }
             let selected_location = place.name
             this.$router.push({ name: 'ListingsPage', params: { location: selected_location } })
           }
@@ -225,7 +220,7 @@ export default {
     },
     checkLoginState (response) {
       if (response.status === 'connected') {
-        FB.api('/me', { fields: 'first_name,email' }, function(profile) {
+        FB.api('/me', { fields: 'first_name,email' }, (profile) => {
           let data = { firstname: profile.first_name, email:'fb_email', login_type: 'facebook' }
           AppService.fbLogin(data).then(res => {
             console.log('fb_login', res.data)
@@ -234,6 +229,7 @@ export default {
             	localStorage.setItem('user', JSON.stringify(res.data.data))
             	let user = JSON.parse(localStorage.getItem('user'))
             	this.setUserData(user)
+              this.$router.go()
             }
           })
         })
@@ -254,9 +250,9 @@ export default {
         AppService.gmailSignup(data).then(res => {
           	console.log('signup gmail_res', res.data)
           	if (res.data.status === 'success') {
-          		this.$refs.signup_modal.hide()
             	localStorage.setItem('user', JSON.stringify(res.data.data))
             	let user = JSON.parse(localStorage.getItem('user'))
+              this.$refs.signup_modal.hide()
             	this.setUserData(user)
             }
         })
@@ -271,10 +267,11 @@ export default {
         let data = { email: email, firstname: firstname, login_type: 'google' }
         AppService.gmailLogin(data).then(res => {
           	if (res.data.status === 'success') {
-          		this.$refs.login_modal.hide()
             	localStorage.setItem('user', JSON.stringify(res.data.data))
             	let user = JSON.parse(localStorage.getItem('user'))
-            	this.setUserData(user)
+              // this.$refs.login_modal.hide()
+            	// this.setUserData(user)
+              window.location.reload()
             }
         })
 
@@ -299,6 +296,12 @@ export default {
 	        		this.showDismissibleAlert = true
 	        		this.login_err = res.data.message
 	        	}
+            if (res.data.status === 'success') {
+              localStorage.setItem('user', JSON.stringify(res.data.data))
+              let user = JSON.parse(localStorage.getItem('user'))
+              this.setUserData(user)
+              this.$router.go()
+            }
 	      	})
     	}
     },
@@ -375,11 +378,12 @@ export default {
     	}
     },
     setUserData (user) {
-    	// console.log('user data', user)
+    	this.user_icon = user.profile_pic
     },
     onLogout () {
     	localStorage.clear()
-    	this.$router.push('/')
+      // this.$router.push('/')
+      window.location.href = "/"
     },
     goToUserProfile () {
       this.$router.push('/user_profile')
@@ -387,10 +391,24 @@ export default {
   },
   mounted () {
 
-  	// console.log('local user', localStorage.getItem('user'))
+    this.fbInit()
+    this.checkUserSession()
 
-  	this.fbInit()
-  	this.checkUserSession()
+  	let user = JSON.parse(localStorage.getItem('user'))
+    console.log('localStorage user', user)
+    if (user != null) {
+      this.setUserData(user)
+    }
+
+    gapi.load('auth2', function() {
+      gapi.auth2.init({
+          client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com',
+          //This two lines are important not to get profile info from your users
+          fetch_basic_profile: true,
+          scope: 'email'
+      });        
+    });
+    
 
   	var pathname = window.location.hash
   	if( pathname.indexOf('become_host') > -1 ) {
@@ -408,9 +426,6 @@ export default {
 .home_nav_bar .ml-auto a.nav-link {
 	color: #fff;
 	font-size: 15px !important;
-	padding-right: 1rem !important;
-	padding-top: 23px;
-	padding-bottom: 23px;
 	font-weight: bold;
 }
 .home_nav_bar a.navbar-brand {
@@ -423,7 +438,7 @@ export default {
   border-bottom: 2px solid transparent;
 }
 .home_nav_bar .ml-auto li.nav_item {
-    padding-top: 2%;
+    padding-top: 5%;
 }
 .head_search {
 	padding: 10px;
@@ -449,8 +464,9 @@ export default {
 	text-align: center;
 }
 .user_img {
-	width: 20px;
+	width: 30px;
 	border-radius: 15px;
+  border: 2px solid #fff;
 }
 .user_dropdown {
 	margin: 0px !important;
