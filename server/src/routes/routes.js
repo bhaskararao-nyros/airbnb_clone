@@ -115,14 +115,18 @@ router.use('/becomehost',function(req, res){
 		location: req.body.location,
 		images: req.body.images,
 		price: req.body.total_price,
-		beds: req.body.beds_count,
-		washroom: req.body.shared_washroom,
-		kitchen: req.body.kitchen,
+		bed_rooms: req.body.bedrooms,
+		bath_rooms: req.body.bathrooms,
 		guests: req.body.guests,
-		room_type: req.body.room_type,
+		host_type: req.body.host_type,
 		owner: req.body.owner,
-		map_coordinates:req.body.map_coordinates,
-		about:req.body.about
+		map_coordinates: req.body.map_coordinates,
+		about: req.body.about,
+		amentities: req.body.amentities,
+		safety_amentities: req.body.safety_amentities,
+		allowed_spaces: req.body.allowed_spaces,
+		rules: req.body.rules,
+		name: req.body.name
 	}).save(function(err1, host1){
        res.json({
        	status:'success',

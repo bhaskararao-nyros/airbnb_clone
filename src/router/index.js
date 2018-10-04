@@ -47,7 +47,7 @@ export default new Router({
       component: UserProfile
     },
     {
-      path: '/edit_user_listing',
+      path: '/edit_user_listing/:id',
       name: 'EditUserListing',
       component: EditUserListing
     }

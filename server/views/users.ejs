@@ -38,7 +38,7 @@
                             <td><% if(user[i].profile_pic === null) { %>
                                 <span>No image</span>
                                 <% } else { %>
-                                    <img src="<%= user[i].profile_pic %>" width="70px">
+                                    <img class="img-circle" src="<%= user[i].profile_pic %>" width="70px" height="70px">
                                 <% } %>
                             </td>
                             <td><%= user[i].login_type %></td>

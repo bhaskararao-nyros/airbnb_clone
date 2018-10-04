@@ -39,32 +39,130 @@
   		<h3 class="text-center list_heading">Listing Creation</h3>
   		<b-row>
 	        <b-col>
-	        	<span class="bg-color">Choose number of beds :</span> 
-	        	<p class="ml-3"><b-button variant="outline-primary" @click="decreBeds" class="beds_btns">-</b-button> - {{ beds_count }} - <b-button variant="outline-primary" @click="increBeds" class="beds_btns">+</b-button></p>
+	        	<span class="bg-color">Host name :</span>
+	        	<input type="text" name="host_name" placeholder="Host name" class="form-control" v-model="host_name"
+	        	> 
+	        	<p class="text-danger" v-if="host_name_err">Property name required</p>
+	        	<span class="bg-color">Choose number of bedrooms :</span> 
+	        	<p class="ml-3"><b-button variant="outline-primary" @click="decreBedrms" class="beds_btns">-</b-button> {{ bedrooms.length }} <b-button variant="outline-primary" @click="increBedrms" class="beds_btns">+</b-button></p>
+	        	<div v-for="(bedrm, index) in bedrooms" :key="index">
+				 
+				  <b-btn size="sm" variant="outline-success" v-b-toggle="'bedroom'+ index" class="m-1">Bed Room {{ index + 1 }}</b-btn>
 
-	        	<div class="kitchen_blk">
-	        		<b-form-group label="Is kitchen available ?">
-	        			<b-form-radio-group v-model="kitchen" name="kitchen" class="ml-3">
-					     	<b-form-radio value="yes">Yes</b-form-radio>
-					        <b-form-radio value="no">No</b-form-radio>
-				        </b-form-radio-group>
-				    </b-form-group>
-		        	<div v-if="kitchen === 'yes'">
-		        		<b-form-group label="Is it shared kitchen ?">
-		        			<b-form-radio-group v-model="shared_kitchen" name="shared_kitchen" class="ml-3">
-						     	<b-form-radio value="yes">Yes</b-form-radio>
-						        <b-form-radio value="no">No</b-form-radio>
-					        </b-form-radio-group>
-					    </b-form-group>
-		        	</div>
+				  
+				  <b-collapse :id="'bedroom'+ index">
+				    <b-card>
+				      <p class="ml-3">Queen Bed <b-button variant="outline-primary" @click="decreBeds('queen', index)" class="beds_btns">-</b-button> {{ bedrm.queen }} <b-button variant="outline-primary" @click="increBeds('queen', index)" class="beds_btns">+</b-button></p>
+				      <p class="ml-3">Double Bed <b-button variant="outline-primary" @click="decreBeds('double', index)" class="beds_btns">-</b-button> {{ bedrm.double }} <b-button variant="outline-primary" @click="increBeds('double', index)" class="beds_btns">+</b-button></p>
+				      <p class="ml-3">Single Bed <b-button variant="outline-primary" @click="decreBeds('single', index)" class="beds_btns">-</b-button> {{ bedrm.single }} <b-button variant="outline-primary" @click="increBeds('single', index)" class="beds_btns">+</b-button></p>
+				      <p class="ml-3">Sofa Bed <b-button variant="outline-primary" @click="decreBeds('sofa', index)" class="beds_btns">-</b-button> {{ bedrm.sofa }} <b-button variant="outline-primary" @click="increBeds('sofa', index)" class="beds_btns">+</b-button></p>
+				    </b-card>
+				  </b-collapse>
+				</div>
+
+				<span class="bg-color">Choose number of bathrooms :</span> 
+	        	<p class="ml-3"><b-button variant="outline-primary" @click="decreBathrms" class="beds_btns">-</b-button> {{ bathrooms.length }} <b-button variant="outline-primary" @click="increBathrms" class="beds_btns">+</b-button></p>
+
+	        	<div v-for="(bathrm, index) in bathrooms" :key="index">
+				 
+				  <b-btn size="sm" variant="outline-success" v-b-toggle="'bathroom'+ index" class="m-1">Bath Room {{ index + 1 }}</b-btn>
+
+				  
+				  <b-collapse :id="'bathroom'+ index">
+				    <b-card>
+				      <label>Shared :</label> &nbsp;&nbsp;
+				      <b-form-radio-group id="radios2" v-model="bathrm.shared" :name="'shared' + index">
+				        <b-form-radio value="yes">Yes</b-form-radio>
+				        <b-form-radio value="no">No</b-form-radio>
+				      </b-form-radio-group>
+				    </b-card>
+				  </b-collapse>
+				</div>
+				<label style="font-weight: bold">Amentities :</label>
+	        	<div class="amentities">
+	        		<b-form-checkbox id="wifi"
+                     	v-model="amentities.wifi">
+			      		Wi-fi
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="tv"
+                     	v-model="amentities.tv">
+			      		Tv
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="ac"
+                     	v-model="amentities.ac">
+			      		Ac
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="iron"
+                     	v-model="amentities.iron">
+			      		Iron
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="pets"
+                     	v-model="amentities.pets">
+			      		Pets
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="hair_dryer"
+                     	v-model="amentities.hair_dryer">
+			      		Hair Dryer
+			    	</b-form-checkbox>
 	        	</div>
-	        	<div class="washroom_blk">
-	        		<b-form-group label="Shared washroom ?">
-	        			<b-form-radio-group v-model="shared_washroom" name="shared_washroom" class="ml-3">
-					     	<b-form-radio value="yes">Yes</b-form-radio>
-					        <b-form-radio value="no">No</b-form-radio>
-				        </b-form-radio-group>
-				    </b-form-group>
+	        	<label style="font-weight: bold">Safety amentities :</label>
+	        	<div class="safety_amentities">
+	        		<b-form-checkbox id="first_aid_kit"
+                     	v-model="safety_amentities.first_aid_kit">
+			      		First Aid Kit
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="fire_safety"
+                     	v-model="safety_amentities.fire_safety">
+			      		Fire Safety
+			    	</b-form-checkbox>
+	        	</div>
+
+	        	<label style="font-weight: bold">Rules :</label>
+	        	<div class="rules">
+	        		<b-form-checkbox id="smoking"
+                     	v-model="rules.smoking">
+			      		Smoking
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="parties"
+                     	v-model="rules.parties">
+			      		Parties
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="events"
+                     	v-model="rules.events">
+			      		Events
+			    	</b-form-checkbox>
+	        	</div>
+
+	        	<label style="font-weight: bold">Allowed spaces :</label>
+	        	<div class="allowed_spaces">
+	        		<b-form-checkbox id="pvt_living_room"
+                     	v-model="allowed_spaces.pvt_living_room">
+			      		Private living room
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="pool"
+                     	v-model="allowed_spaces.pool">
+			      		Pool
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="kitchen"
+                     	v-model="allowed_spaces.kitchen">
+			      		Kitchen
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="laundry_washer"
+                     	v-model="allowed_spaces.laundry_washer">
+			      		Laundry washer
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="laundry_dryer"
+                     	v-model="allowed_spaces.laundry_dryer">
+			      		Laundry dryer
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="hot_tub"
+                     	v-model="allowed_spaces.hot_tub">
+			      		Hot tub
+			    	</b-form-checkbox><br>
+			    	<b-form-checkbox id="gym"
+                     	v-model="allowed_spaces.gym">
+			      		Gym
+			    	</b-form-checkbox>
 	        	</div>
 	        	<div>
 	        		Upload some property images :
@@ -116,25 +214,50 @@
 	        		<p>Total cost : <span class="badge">&#x20B9; {{ total_price }}</span></p>
 	        	</div>
 	        	<div>
-	        		<span>Number of beds available : 
-	        		<span v-if="beds_count <= 3">
-	        			<img v-for="n in beds_count" src="../assets/img/bed.png" class="guest_img">
-	        		</span>
-	        		<span v-if="beds_count > 3">
-	        			<img v-for="n in beds_count" v-if="n <= 3" src="../assets/img/bed.png" class="guest_img"> ... + {{ beds_count }}
-	        		</span>
-	        		</span>
+	        		<div v-for="(bedrm, index) in bedrooms" class="bedrooms_div">
+	        			<span style="font-weight: bold">Bed Room{{ index + 1 }} - {{ bedrm.single + bedrm.double + bedrm.sofa + bedrm.queen }}</span><br>
+	        			<span>Single Beds: {{ bedrm.single }}<br> Double Beds: {{ bedrm.double }} <br>Sofa Beds: {{ bedrm.sofa }}<br> Queen Beds: {{ bedrm.queen }}</span>
+	        		</div>
 	        	</div>
+
 	        	<div>
-	        		<p v-if="kitchen === 'yes'">Kitchen avaliable.
-	        			<span class="badge" v-if="shared_kitchen === 'yes'">Shared kitchen</span>
-	        			<span class="badge" v-if="shared_kitchen === 'no'">Individual kitchen</span>
-	        		</p>
+	        		<div v-for="(bathrm, index) in bathrooms" class="bedrooms_div">
+	        			<span>Bath Room{{ index + 1 }} - {{ bathrm.shared === 'yes' ? "Shared" : "Private" }}</span>
+	        		</div>
 	        	</div>
-	        	<div>
-	        		<p class="badge" v-if="shared_washroom === 'yes'">Shared washroom</p>
-	        		<p class="badge" v-if="shared_washroom === 'no'">Individual washroom</p>
+	        	<div class="amentities">
+	        		<label style="font-weight: bold">Amentities : </label><br>
+	        		<span v-if="amentities.wifi">Wi-fi</span><br>
+	        		<span v-if="amentities.tv">Tv</span><br>
+	        		<span v-if="amentities.ac">Ac</span><br>
+	        		<span v-if="amentities.iron">Iron</span><br>
+	        		<span v-if="amentities.pets">Pets</span><br>
+	        		<span v-if="amentities.hair_dryer">Hair dryer</span>
 	        	</div>
+
+	        	<div class="safety_amentities">
+	        		<label style="font-weight: bold">Safety amentities : </label><br>
+	        		<span v-if="safety_amentities.first_aid_kit">First aid kit</span><br>
+	        		<span v-if="safety_amentities.fire_safety">Fire Safety</span>
+	        	</div>
+
+	        	<div class="rules">
+	        		<label style="font-weight: bold">Rules : </label><br>
+	        		<span v-if="rules.smoking">Smoking</span><br>
+	        		<span v-if="rules.events">Events</span><br>
+	        		<span v-if="rules.parties">Parties</span>
+	        	</div>
+
+	        	<div class="allowed_spaces">
+	        		<label style="font-weight: bold">Allowed spaces : </label><br>
+	        		<span v-if="allowed_spaces.pool">Pool</span><br>
+	        		<span v-if="allowed_spaces.kitchen">Kitchen</span><br>
+	        		<span v-if="allowed_spaces.laundry_washer">Laundry washer</span><br>
+	        		<span v-if="allowed_spaces.laundry_dryer">Laundry dryer</span><br>
+	        		<span v-if="allowed_spaces.hot_tub">Hot tub</span><br>
+	        		<span v-if="allowed_spaces.gym">Gym</span>
+	        	</div>
+
 	        	<div v-if="image_url_arr.length != 0 ">
 	        		Property Images : <br>
 	        		<span v-for="image in image_url_arr">
@@ -149,15 +272,18 @@
 	        </b-col>
 	    </b-row>
 	    <div class="text-center">
+	    	<b-button size="sm" @click="becomehost_block = true" variant="default">Back</b-button>
 	    	<b-button size="sm" @click="submitListing" variant="primary">submit listing</b-button>
 	    </div>
   	</div>
+  	<FooterComponent />
   </div>
 </template>
 
 <script>
 
 import HeaderComponent from '@/components/Header'
+import FooterComponent from '@/components/Footer'
 import AppService from '@/services/AppService'
 
 export default {
@@ -175,16 +301,20 @@ export default {
     	guest_count: 2,
     	becomehost_block: true,
     	fillout_search_addr: '',
-    	beds_count: 1,
-    	kitchen: 'no',
-    	shared_kitchen: 'yes',
-    	shared_washroom: 'no',
+    	bedrooms: [{ single: 0, double: 0, sofa: 0, queen: 0 }],
+    	bathrooms: [{ shared: "no" }],
+    	amentities: { wifi: true, tv: true, ac: false, hair_dryer: false, pets: false, iron: false },
+    	safety_amentities: { first_aid_kit: true, fire_safety: true },
+    	rules: { smoking: true, events: false, parties: true },
+    	allowed_spaces: { pvt_living_room: false, pool: true, kitchen: false, gym: true, laundry_washer: false, laundry_dryer: false, hot_tub: false },
     	image_url_arr: [],
     	property_desc:'',
     	images_err: false,
     	property_location:'',
     	map_coordinates:{ lat:'', lng: ''},
-    	showDismissibleAlert: false
+    	showDismissibleAlert: false,
+    	host_name: '',
+    	host_name_err: false
     }
   },
   methods: {
@@ -227,13 +357,25 @@ export default {
   			this.$refs.headerComp.openLoginModal()
   		}
   	},
-  	decreBeds () {
-  		if (this.beds_count !== 1) {
-  			this.beds_count = this.beds_count - 1
-  		}
+  	decreBedrms () {
+  		this.bedrooms.pop()
   	},
-  	increBeds () {
-  		this.beds_count = this.beds_count + 1
+  	increBedrms () {
+  		let obj = { queen: 0, single: 0, double: 0, sofa: 0 }
+  		this.bedrooms.push(obj)
+  	},
+  	increBeds (name, index) {
+  		this.bedrooms[index][name] = this.bedrooms[index][name] + 1; 
+  	},
+  	decreBeds (name, index) {
+  		this.bedrooms[index][name] = this.bedrooms[index][name] - 1;
+  	},
+  	increBathrms () {
+  		let obj = { shared: "no" }
+  		this.bathrooms.push(obj)
+  	},
+  	decreBathrms () {
+  		this.bathrooms.pop()
   	},
   	uploadImages () {
   		this.$refs.image.click()
@@ -258,7 +400,7 @@ export default {
   	},
   	submitListing () {
   		let kitchen_obj = { kitchen_avail:this.kitchen, shared_kitchen: this.shared_kitchen }
-  		let room_type = document.getElementById('room_type_blk').children[0].children[0].textContent
+  		let host_type = document.getElementById('room_type_blk').children[0].children[0].textContent
 
   		if (this.image_url_arr.length === 0) {
   			this.images_err = true
@@ -271,21 +413,31 @@ export default {
   			this.description_err = false
   		}
 
+  		if (this.host_name === '') {
+  			this.host_name_err = true
+  		} else {
+  			this.host_name_err = false
+  		}
+
   		if (this.image_url_arr.length !== 0 && this.property_desc !== '') {
   			let user = JSON.parse(localStorage.getItem('user'))
 
   			let data = {
+  				name: this.host_name,
   				guests: this.guest_count,
-  				room_type: room_type,
+  				host_type: host_type,
   				location: this.property_location,
-  				beds_count: this.beds_count,
-  				kitchen: kitchen_obj,
-  				shared_washroom: this.shared_washroom,
+  				bedrooms: this.bedrooms,
+  				bathrooms: this.bathrooms,
   				images: this.image_url_arr,
   				about: this.property_desc,
   				total_price: this.total_price,
   				owner: user._id,
-  				map_coordinates: this.map_coordinates
+  				map_coordinates: this.map_coordinates,
+  				amentities: this.amentities,
+  				safety_amentities: this.safety_amentities,
+  				rules: this.rules,
+  				allowed_spaces: this.allowed_spaces,
   			}
   			
   			AppService.becomeHost(data).then(res => {
@@ -318,7 +470,8 @@ export default {
 	this.total_price = 3000 * parseInt(this.guest_count) + parseInt(this.room_price)
   },
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>
@@ -384,6 +537,8 @@ export default {
 	margin: 5% 10% 0% 10%;
 	background-color: #e9e9e9;
 	padding: 5%;
+	height: 650px;
+	overflow: scroll;
 }
 .guest_img {
 	width: 50px;
@@ -429,6 +584,10 @@ export default {
 }
 .alert_blk {
 	text-align: center;
+}
+.bedrooms_div, .amentities, .safety_amentities, .rules, .allowed_spaces {
+	background-color: #fff;
+	padding: 10px;
 }
 
 </style>

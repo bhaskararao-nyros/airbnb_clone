@@ -2,7 +2,7 @@
   <div>
 	<b-navbar class="home_nav_bar" toggleable="md" type="dark" variant="info">
   <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
-  <b-navbar-brand href="#/"><img src="../assets/img/logo.png" width="40px"></b-navbar-brand>
+  <b-navbar-brand href="#/">Flyhome</b-navbar-brand>
 
 	  <b-collapse is-nav id="nav_collapse">
 	  	<b-navbar-nav>
@@ -17,7 +17,7 @@
 	      	<b-nav-item href="#" v-if="userLoggedin">
 	      		<b-dropdown variant="link" size="sm" id="ddown1" class="m-md-2 user_dropdown" no-caret>
 	      			<template slot="button-content" >
-                <img v-if="user_icon !== '' " :src="user_icon" class="user_img">
+                <img v-if="user_icon !== '' && user_icon !== null " :src="user_icon" class="user_img">
 	      				<img v-else src="../assets/img/user.png" class="user_img">
 	      			</template>
             <b-dropdown-item @click="goToUserProfile">Profile</b-dropdown-item>
@@ -395,7 +395,7 @@ export default {
     this.checkUserSession()
 
   	let user = JSON.parse(localStorage.getItem('user'))
-    console.log('localStorage user', user)
+    // console.log('localStorage user', user)
     if (user != null) {
       this.setUserData(user)
     }
@@ -421,7 +421,7 @@ export default {
 <style scoped>
 .home_nav_bar {
 	padding: 0rem 0rem !important;
-	background-color: #a4a77f !important;
+	background-color: #7f8442 !important;
 }
 .home_nav_bar .ml-auto a.nav-link {
 	color: #fff;
@@ -467,6 +467,7 @@ export default {
 	width: 30px;
 	border-radius: 15px;
   border: 2px solid #fff;
+  height: 30px;
 }
 .user_dropdown {
 	margin: 0px !important;

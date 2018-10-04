@@ -65,27 +65,54 @@
 		    <div class="listings_div">
 		    	<b-tabs pills card>
 				  <b-tab title="All Listings" active>
-				    <div class="listings_for_div" v-for="listing in listings" :key="listing._id">
+				    <div v-if="listings.length > 0" class="listings_for_div" v-for="listing in listings" :key="listing._id">
 				    	<b-row>
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
-				    			<p>{{ listing.washroom === 'yes' ? 'Shared washroom' : 'Individual washroom' }}</p>
-				    			<p>{{ kitechCal(listing.kitchen) }} </p>
-				    			<p>Free Wi-fi available</p>
-				    			<p class="amentities">Beds</p>
-				    			<p>{{ listing.beds }}</p>
+
+				    			<span v-if="listing.amentities.wifi">Wi-fi,</span>
+				    			<span v-if="listing.amentities.tv">Tv,</span>
+				    			<span v-if="listing.amentities.ac">Air Conditioning,</span>
+				    			<span v-if="listing.amentities.hair_dryer">Hair Dryer,</span>
+				    			<span v-if="listing.amentities.pets">pets,</span>
+				    			<span v-if="listing.amentities.iron">Iron</span><br>
+
+				    			<span class="amentities">Bed Rooms: </span>
+				    			<span>{{ listing.bed_rooms.length }}</span><br>
+				    			<span class="amentities">Bath Rooms: </span>
+				    			<span>{{ listing.bath_rooms.length }}</span><br>
 				    			<p class="amentities">About</p>
-				    			<p>{{ listing.about }}</p>
-				    		</b-col>
-				    		<b-col>
-				    			<p class="amentities">Room type</p>
-				    			<p>{{ listing.room_type }}</p>
-				    			<p class="amentities">Guests</p>
-				    			<p>{{ listing.guests }}</p>
-				    			<p class="amentities">Location</p>
-				    			<p>{{ listing.location }}</p>
+				    			<span>{{ listing.about }}</span>
 				    			<p class="amentities">Price</p>
 				    			<p>&#x20B9; {{ listing.price }}</p>
+				    		</b-col>
+				    		<b-col>
+				    			<p class="amentities">Safety Amentities</p>
+
+				    			<span v-if="listing.safety_amentities.first_aid_kit">First Aid Kit,</span>
+				    			<span v-if="listing.safety_amentities.fire_safety">Fire safety</span><br>
+				    			
+				    			<p class="amentities">Rules</p>
+				    			<span v-if="listing.rules.smoking">No Smoking,</span>
+				    			<span v-if="listing.rules.parties">No Parties,</span>
+				    			<span v-if="listing.rules.events">No Events</span><br>
+
+				    			<p class="amentities">Allowed spaces</p>
+
+				    			<span v-if="listing.allowed_spaces.pvt_living_room">Private living room,</span>
+				    			<span v-if="listing.allowed_spaces.pool">Pool,</span>
+				    			<span v-if="listing.allowed_spaces.kitchen">Kitchen,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_dryer">Laundry dryer,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_washer">Laundry washer,</span>
+				    			<span v-if="listing.allowed_spaces.gym">Gym,</span>
+				    			<span v-if="listing.allowed_spaces.hot_tub">Hot Tub</span>
+
+				    			<p class="amentities">Host type</p>
+				    			<span>{{ listing.host_type }}</span><br>
+				    			<span class="amentities">Guests: </span>
+				    			<span>{{ listing.guests }}</span>
+				    			<p class="amentities">Location</p>
+				    			<p>{{ listing.location }}</p>
 				    		</b-col>
 				    		<b-col>
 				    			<div class="images_col" v-for="image in listing.images">
@@ -94,33 +121,60 @@
 				    		</b-col>
 				    	</b-row>
 				    	<div class="align_right">
-				    		<b-button variant="default" size="sm" href="#/edit_user_listing">Edit</b-button>
+				    		<b-button variant="default" size="sm" :href="'#/edit_user_listing/' + listing._id">Edit</b-button>
 				    	</div>
 				    </div>
 				    <p v-if="listings.length === 0" class="text-center">No Listings </p>
 				  </b-tab>
 				  <b-tab title="Approved">
-			      	<div class="listings_for_div" v-for="listing in approved_lists" :key="listing._id">
+			      	<div class="listings_for_div" v-if="approved_lists.length > 0" v-for="listing in approved_lists" :key="listing._id">
 				    	<b-row>
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
-				    			<p>{{ listing.washroom === 'yes' ? 'Shared washroom' : 'Individual washroom' }}</p>
-				    			<p>{{ kitechCal(listing.kitchen) }} </p>
-				    			<p>Free Wi-fi available</p>
-				    			<p class="amentities">Beds</p>
-				    			<p>{{ listing.beds }}</p>
+
+				    			<span v-if="listing.amentities.wifi">Wi-fi,</span>
+				    			<span v-if="listing.amentities.tv">Tv,</span>
+				    			<span v-if="listing.amentities.ac">Air Conditioning,</span>
+				    			<span v-if="listing.amentities.hair_dryer">Hair Dryer,</span>
+				    			<span v-if="listing.amentities.pets">pets,</span>
+				    			<span v-if="listing.amentities.iron">Iron</span><br>
+
+				    			<span class="amentities">Bed Rooms: </span>
+				    			<span>{{ listing.bed_rooms.length }}</span><br>
+				    			<span class="amentities">Bath Rooms: </span>
+				    			<span>{{ listing.bath_rooms.length }}</span><br>
 				    			<p class="amentities">About</p>
-				    			<p>{{ listing.about }}</p>
-				    		</b-col>
-				    		<b-col>
-				    			<p class="amentities">Room type</p>
-				    			<p>{{ listing.room_type }}</p>
-				    			<p class="amentities">Guests</p>
-				    			<p>{{ listing.guests }}</p>
-				    			<p class="amentities">Location</p>
-				    			<p>{{ listing.location }}</p>
+				    			<span>{{ listing.about }}</span>
 				    			<p class="amentities">Price</p>
 				    			<p>&#x20B9; {{ listing.price }}</p>
+				    		</b-col>
+				    		<b-col>
+				    			<p class="amentities">Safety Amentities</p>
+
+				    			<span v-if="listing.safety_amentities.first_aid_kit">First Aid Kit,</span>
+				    			<span v-if="listing.safety_amentities.fire_safety">Fire safety</span><br>
+				    			
+				    			<p class="amentities">Rules</p>
+				    			<span v-if="listing.rules.smoking">No Smoking,</span>
+				    			<span v-if="listing.rules.parties">No Parties,</span>
+				    			<span v-if="listing.rules.events">No Events</span><br>
+
+				    			<p class="amentities">Allowed spaces</p>
+
+				    			<span v-if="listing.allowed_spaces.pvt_living_room">Private living room,</span>
+				    			<span v-if="listing.allowed_spaces.pool">Pool,</span>
+				    			<span v-if="listing.allowed_spaces.kitchen">Kitchen,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_dryer">Laundry dryer,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_washer">Laundry washer,</span>
+				    			<span v-if="listing.allowed_spaces.gym">Gym,</span>
+				    			<span v-if="listing.allowed_spaces.hot_tub">Hot Tub</span>
+
+				    			<p class="amentities">Host type</p>
+				    			<span>{{ listing.host_type }}</span><br>
+				    			<span class="amentities">Guests: </span>
+				    			<span>{{ listing.guests }}</span>
+				    			<p class="amentities">Location</p>
+				    			<p>{{ listing.location }}</p>
 				    		</b-col>
 				    		<b-col>
 				    			<div class="images_col" v-for="image in listing.images">
@@ -129,33 +183,60 @@
 				    		</b-col>
 				    	</b-row>
 				    	<div class="align_right">
-				    		<b-button variant="default" size="sm" href="#/edit_user_listing">Edit</b-button>
+				    		<b-button variant="default" size="sm" :href="'#/edit_user_listing/' + listing._id">Edit</b-button>
 				    	</div>
 				    </div>
 				    <p v-if="approved_lists.length === 0" class="text-center">No Approved Listings </p>
 			      </b-tab>
 			      <b-tab title="Pending">
-			      	<div class="listings_for_div" v-for="listing in pending_lists" :key="listing._id">
+			      	<div class="listings_for_div" v-if="pending_lists.length > 0" v-for="listing in pending_lists" :key="listing._id">
 				    	<b-row>
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
-				    			<p>{{ listing.washroom === 'yes' ? 'Shared washroom' : 'Individual washroom' }}</p>
-				    			<p>{{ kitechCal(listing.kitchen) }} </p>
-				    			<p>Free Wi-fi available</p>
-				    			<p class="amentities">Beds</p>
-				    			<p>{{ listing.beds }}</p>
+
+				    			<span v-if="listing.amentities.wifi">Wi-fi,</span>
+				    			<span v-if="listing.amentities.tv">Tv,</span>
+				    			<span v-if="listing.amentities.ac">Air Conditioning,</span>
+				    			<span v-if="listing.amentities.hair_dryer">Hair Dryer,</span>
+				    			<span v-if="listing.amentities.pets">pets,</span>
+				    			<span v-if="listing.amentities.iron">Iron</span><br>
+
+				    			<span class="amentities">Bed Rooms: </span>
+				    			<span>{{ listing.bed_rooms.length }}</span><br>
+				    			<span class="amentities">Bath Rooms: </span>
+				    			<span>{{ listing.bath_rooms.length }}</span><br>
 				    			<p class="amentities">About</p>
-				    			<p>{{ listing.about }}</p>
-				    		</b-col>
-				    		<b-col>
-				    			<p class="amentities">Room type</p>
-				    			<p>{{ listing.room_type }}</p>
-				    			<p class="amentities">Guests</p>
-				    			<p>{{ listing.guests }}</p>
-				    			<p class="amentities">Location</p>
-				    			<p>{{ listing.location }}</p>
+				    			<span>{{ listing.about }}</span>
 				    			<p class="amentities">Price</p>
 				    			<p>&#x20B9; {{ listing.price }}</p>
+				    		</b-col>
+				    		<b-col>
+				    			<p class="amentities">Safety Amentities</p>
+
+				    			<span v-if="listing.safety_amentities.first_aid_kit">First Aid Kit,</span>
+				    			<span v-if="listing.safety_amentities.fire_safety">Fire safety</span><br>
+				    			
+				    			<p class="amentities">Rules</p>
+				    			<span v-if="listing.rules.smoking">No Smoking,</span>
+				    			<span v-if="listing.rules.parties">No Parties,</span>
+				    			<span v-if="listing.rules.events">No Events</span><br>
+
+				    			<p class="amentities">Allowed spaces</p>
+
+				    			<span v-if="listing.allowed_spaces.pvt_living_room">Private living room,</span>
+				    			<span v-if="listing.allowed_spaces.pool">Pool,</span>
+				    			<span v-if="listing.allowed_spaces.kitchen">Kitchen,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_dryer">Laundry dryer,</span>
+				    			<span v-if="listing.allowed_spaces.laundry_washer">Laundry washer,</span>
+				    			<span v-if="listing.allowed_spaces.gym">Gym,</span>
+				    			<span v-if="listing.allowed_spaces.hot_tub">Hot Tub</span>
+
+				    			<p class="amentities">Host type</p>
+				    			<span>{{ listing.host_type }}</span><br>
+				    			<span class="amentities">Guests: </span>
+				    			<span>{{ listing.guests }}</span>
+				    			<p class="amentities">Location</p>
+				    			<p>{{ listing.location }}</p>
 				    		</b-col>
 				    		<b-col>
 				    			<div class="images_col" v-for="image in listing.images">
@@ -164,7 +245,7 @@
 				    		</b-col>
 				    	</b-row>
 				    	<div class="align_right">
-				    		<b-button variant="default" size="sm" href="#/edit_user_listing">Edit</b-button>
+				    		<b-button variant="default" size="sm" :href="'#/edit_user_listing/' + listing._id">Edit</b-button>
 				    	</div>
 				    </div>
 				    <p v-if="pending_lists.length === 0" class="text-center">No Pending Listings </p>
@@ -241,35 +322,26 @@ export default {
     },
     getUserListings (id) {
     	let data = { id: id }
+    	this.listings = []
+      	this.approved_lists = []
+      	this.pending_lists = []
+
     	AppService.getUserListings(data).then(res => {
 	      	console.log('get user listings res', res.data.data)
-	      	this.listings = res.data.data
-	      	this.approved_lists = []
-	      	this.pending_lists = []
+	      	if (res.data.data !== undefined) {
+		      	this.listings = res.data.data
 
-	      	for (var i = 0; i < this.listings.length; i++) {
-			    if (this.listings[i].approved === 1) {
-			    	this.approved_lists.push(this.listings[i])
-			    }
-			    if (this.listings[i].approved === 0) {
-			    	this.pending_lists.push(this.listings[i])
-			    }
+		      	for (var i = 0; i < this.listings.length; i++) {
+				    if (this.listings[i].approved === 1) {
+				    	this.approved_lists.push(this.listings[i])
+				    }
+				    if (this.listings[i].approved === 0) {
+				    	this.pending_lists.push(this.listings[i])
+				    }
+				}
 			}
 	    })
-    },
-    kitechCal (obj) {
-  		if (obj !== undefined) {
-	  		if (obj.kitchen_avail === 'yes') {
-	  			if (obj.shared_kitchen === 'yes') {
-	  				return "Shared kitchen available"
-	  			} else {
-	  				return "Individual kitchen available"
-	  			}
-	  		} else {
-	  			return "No kitchen available"
-	  		}
-	  	}
-  	}
+    }
   },
   mounted () {
 
@@ -317,6 +389,7 @@ export default {
 	border-radius: 49%;
 	border: 2px solid #fff;
 	padding: 1px;
+	height: 100px;
 }
 .image_col {
 	max-width: 11% !important;
@@ -347,18 +420,20 @@ export default {
 	color: #625b5b;
 }
 .listings_div {
-	border-top: 1px solid #fff;
+	/*border-top: 1px solid #fff;*/
 	padding-top: 1%;
 }
 .listings_for_div {
 	background-color: #fff;
 	border: 1px solid #439fc9;
-	padding: 3%;
+	padding: 2%;
 	color: #625b5b;
 	margin-top: 2%;
 }
 .amentities {
 	font-weight: bold;
+	margin-bottom: 0px;
+	margin-top: 5px;
 }
 .images_col {
 	display: inline-grid;

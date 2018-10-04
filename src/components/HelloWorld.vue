@@ -16,7 +16,7 @@
     </div>
     <div class="grid_blks">
       <b-col md="12" class="py-12 airbnb_plus_blk">
-         <span class="airbnb_plus">Introducing Airbnb plus</span><br>
+         <span class="airbnb_plus">Introducing Flyhome plus</span><br>
          <span class="airbnb_plus_sub">A new selection of homes verified for quality and comfort</span><br>
          <img src="../assets/img/airbnb_plus.png" width="100%" height="320px">
          <button class="explore_homes_btn">EXPLORE HOMES</button>
