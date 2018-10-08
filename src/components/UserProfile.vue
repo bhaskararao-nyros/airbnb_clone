@@ -66,7 +66,8 @@
 		    	<b-tabs pills card>
 				  <b-tab title="All Listings" active>
 				    <div v-if="listings.length > 0" class="listings_for_div" v-for="listing in listings" :key="listing._id">
-				    	<b-row>
+				    <h4 class="host_name">{{ listing.name }}</h4>
+				    	<b-row class="listing_row">
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
 
@@ -114,9 +115,12 @@
 				    			<p class="amentities">Location</p>
 				    			<p>{{ listing.location }}</p>
 				    		</b-col>
-				    		<b-col>
+				    		<b-col class="images_blk">
 				    			<div class="images_col" v-for="image in listing.images">
 				    				<img :src="image.url">
+				    			</div>
+				    			<div class="review_rating">
+				    				<span>Review & Ratings ({{ listing.review_rating.length }} reviews)</span>
 				    			</div>
 				    		</b-col>
 				    	</b-row>
@@ -128,7 +132,8 @@
 				  </b-tab>
 				  <b-tab title="Approved">
 			      	<div class="listings_for_div" v-if="approved_lists.length > 0" v-for="listing in approved_lists" :key="listing._id">
-				    	<b-row>
+			      	<h4 class="host_name">{{ listing.name }}</h4>
+				    	<b-row class="listing_row">
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
 
@@ -176,9 +181,12 @@
 				    			<p class="amentities">Location</p>
 				    			<p>{{ listing.location }}</p>
 				    		</b-col>
-				    		<b-col>
+				    		<b-col class="images_blk">
 				    			<div class="images_col" v-for="image in listing.images">
 				    				<img :src="image.url">
+				    			</div>
+				    			<div class="review_rating">
+				    				<span>Review & Ratings ({{ listing.review_rating.length }} reviews)</span>
 				    			</div>
 				    		</b-col>
 				    	</b-row>
@@ -190,7 +198,8 @@
 			      </b-tab>
 			      <b-tab title="Pending">
 			      	<div class="listings_for_div" v-if="pending_lists.length > 0" v-for="listing in pending_lists" :key="listing._id">
-				    	<b-row>
+			      	<h4 class="host_name">{{ listing.name }}</h4>
+				    	<b-row class="listing_row">
 				    		<b-col>
 				    			<p class="amentities">Amentities</p>
 
@@ -238,9 +247,12 @@
 				    			<p class="amentities">Location</p>
 				    			<p>{{ listing.location }}</p>
 				    		</b-col>
-				    		<b-col>
+				    		<b-col class="images_blk">
 				    			<div class="images_col" v-for="image in listing.images">
 				    				<img :src="image.url">
+				    			</div>
+				    			<div class="review_rating">
+				    				<span>Review & Ratings ({{ listing.review_rating.length }} reviews)</span>
 				    			</div>
 				    		</b-col>
 				    	</b-row>
@@ -254,6 +266,7 @@
 		    </div>
 		    
 	  	</div>
+	  	<FooterComponent/>
   	</div>
   	
 </template>
@@ -261,6 +274,7 @@
 <script>
 
 import HeaderComponent from '@/components/Header'
+import FooterComponent from '@/components/Footer'
 import AppService from '@/services/AppService'
 
 export default {
@@ -368,7 +382,8 @@ export default {
   	
   },
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>
@@ -376,6 +391,17 @@ export default {
 <style scoped>
 .head_component {
 	background-color: #a4a77f;
+}
+.host_name {
+	color: #fff;
+}
+.listing_row .col {
+	background-color: #fff;
+	margin: 2px;
+	border-radius: 5px;
+}
+.listing_row .images_blk {
+	padding: 10px;
 }
 .user_profile_blk {
 	margin-right: 5%;
@@ -424,7 +450,7 @@ export default {
 	padding-top: 1%;
 }
 .listings_for_div {
-	background-color: #fff;
+	background-color: #439fc9;
 	border: 1px solid #439fc9;
 	padding: 2%;
 	color: #625b5b;
@@ -471,6 +497,9 @@ export default {
 .lists_count {
 	font-size: 30px;
 	float: right;
+}
+.review_rating {
+	margin-top: 2%;
 }
 
 </style>

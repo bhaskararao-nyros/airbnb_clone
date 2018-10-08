@@ -4,37 +4,79 @@
 		<HeaderComponent ref="headerComp" />
 	</div>
 	  	<div class="listings_blk">
-		  	<h4 class="listing_head">Searched for homes in <span>{{ location_address }}</span></h4>
-		  	<b-row class="listing_row" v-for="list in listings" :key="list._id">
-		        <b-col>
-		        	<b-img :src="list.images[0].url" fluid alt="Responsive image" class="listing_image" />
-		        	<div class="location_div">
-		        	Address :
-			        	<a>{{ list.location }}</a>
-			        </div>
-		        </b-col>
-		        <b-col class="listings_right_blk">
-		        <div class="view_more_btn">
-		        	<b-button :href="'#/full-details/' + list._id"  variant="outline-success" size="sm">View More</b-button>	
-		        </div>
-		        
-		        <p>About :</p>
-		        	<ul class="listing_details">
-		        		<li>- No smoking</li>
-		        		<li>- No pets</li>
-		        		<li>- No parties and No events</li>
-		        		<li>- {{ list.room_type }}</li>
-		        		<li>- {{ list.guests }} Guests</li>
-		        		<li>- {{ list.beds }} Beds</li>
-		        		<li>- {{ list.washroom === 'no' ? 'Individual washroom' : 'Shared washroom' }}</li>
-		        		<li>- {{ list.kitchen.kitchen_avail === 'yes' && list.kitchen.shared_kitchen === 'yes' ? 'Shared kitchen available' : 'Individual kitchen'  }}</li>
-		        	</ul>
-		        <div class="price_btn">
-		        	<b-button  variant="success" size="sm">&#x20B9; {{ list.price }}</b-button>	
-		        </div>
-		        </b-col>
-		    </b-row>
+	  		<div v-if="listings.length > 0">
+			  	<h4 class="listing_head">Searched for homes in <span>{{ location_address }}</span></h4>
+			  	<div class="listing_row" v-for="listing in listings" :key="listing._id">
+			  	<h4 class="listing_name">{{ listing.name }}</h4>
+				  	<b-row>
+				        <b-col>
+				        	<b-img :src="listing.images[0].url" fluid alt="Responsive image" class="listing_image" />
+				        	<div class="location_div">
+				        	Address :
+					        	<a>{{ listing.location }}</a>
+					        </div>
+					        <div class="review_rating_blk">
+					        	Reviews & Ratings ({{ listing.review_rating.length }})
+					        </div>
+				        </b-col>
+				        <b-col class="listings_right_blk">
+				        	<p class="amentities">Amentities</p>
+			    			<span v-if="listing.amentities.wifi">Wi-fi,</span>
+			    			<span v-if="listing.amentities.tv">Tv,</span>
+			    			<span v-if="listing.amentities.ac">Air Conditioning,</span>
+			    			<span v-if="listing.amentities.hair_dryer">Hair Dryer,</span>
+			    			<span v-if="listing.amentities.pets">pets,</span>
+			    			<span v-if="listing.amentities.iron">Iron</span><br>
+
+			    			<span class="amentities">Bed Rooms: </span>
+			    			<span>{{ listing.bed_rooms.length }}</span><br>
+			    			<span class="amentities">Bath Rooms: </span>
+			    			<span>{{ listing.bath_rooms.length }}</span><br>
+			    			<p class="amentities">About</p>
+			    			<span>{{ listing.about }}</span>
+				        </b-col>
+				        <b-col class="listings_right_blk">
+				        <div class="view_more_btn">
+				        	<b-button :href="'#/full-details/' + listing._id"  variant="outline-success" size="sm">View More</b-button>	
+				        </div>
+				        
+				        <p class="amentities">Safety Amentities</p>
+
+		    			<span v-if="listing.safety_amentities.first_aid_kit">First Aid Kit,</span>
+		    			<span v-if="listing.safety_amentities.fire_safety">Fire safety</span><br>
+		    			
+		    			<p class="amentities">Rules</p>
+		    			<span v-if="listing.rules.smoking">No Smoking,</span>
+		    			<span v-if="listing.rules.parties">No Parties,</span>
+		    			<span v-if="listing.rules.events">No Events</span><br>
+
+		    			<p class="amentities">Allowed spaces</p>
+
+		    			<span v-if="listing.allowed_spaces.pvt_living_room">Private living room,</span>
+		    			<span v-if="listing.allowed_spaces.pool">Pool,</span>
+		    			<span v-if="listing.allowed_spaces.kitchen">Kitchen,</span>
+		    			<span v-if="listing.allowed_spaces.laundry_dryer">Laundry dryer,</span>
+		    			<span v-if="listing.allowed_spaces.laundry_washer">Laundry washer,</span>
+		    			<span v-if="listing.allowed_spaces.gym">Gym,</span>
+		    			<span v-if="listing.allowed_spaces.hot_tub">Hot Tub</span>
+
+		    			<p class="amentities">Host type</p>
+		    			<span>{{ listing.host_type }}</span><br>
+		    			<span class="amentities">Guests: </span>
+		    			<span>{{ listing.guests }}</span>
+				        <div class="price_btn">
+				        	<b-button  variant="success" size="sm">&#x20B9; {{ listing.price }}</b-button>	
+				        </div>
+				        </b-col>
+				    </b-row>
+			    </div>
+			</div>
+			<div v-else class="not_found">
+				<h3>No Listings Found on this location </h3>
+				<p> {{ searched_location }}</p>
+			</div>
 	  	</div>
+	  	<FooterComponent/>
   	</div>
   	
 </template>
@@ -42,6 +84,7 @@
 <script>
 
 import HeaderComponent from '@/components/Header'
+import FooterComponent from '@/components/Footer'
 import AppService from '@/services/AppService'
 
 export default {
@@ -49,7 +92,8 @@ export default {
   data () {
     return {
     	listings:[],
-    	location_address:''
+    	location_address:'',
+    	searched_location: this.$route.params.location
     }
   },
   methods: {
@@ -64,9 +108,6 @@ export default {
       	if (res.data.data.length > 0) {
       		this.listings = res.data.data
         	this.location_address = res.data.data[0].location
-      	} else {
-      		alert("No listings in this location");
-      		this.$router.push('/');
       	}
         
       } else {
@@ -76,7 +117,8 @@ export default {
 
   },
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>
@@ -92,6 +134,11 @@ export default {
 	padding: 1%;
 	opacity: 0.9;
 	z-index: 100;
+	border-radius: 5px;
+}
+.listing_row .col {
+	margin: 5px;
+	padding: 5px;
 	border-radius: 5px;
 }
 .listing_head span {
@@ -137,11 +184,31 @@ export default {
 	margin-top: 2px;
 }
 .listings_blk {
-	background: url('../assets/img/bg.jpeg') no-repeat center;
+	background-color: #dcdec5;
+	height: 100%;
 }
 .listings_right_blk {
 	background-color: #f1f3f0;
 	padding: 5px;
+}
+.not_found {
+	padding-top: 15%;
+	padding-left: 33%;
+}
+.amentities {
+	font-weight: bold;
+	margin-bottom: 0px;
+	margin-top: 5px;
+}
+.listing_name {
+	color: #4e904e;
+	font-weight: bold;
+}
+body, html {
+  height: 100%;
+}
+.review_rating_blk {
+	margin-top: 1%;
 }
 
 </style>

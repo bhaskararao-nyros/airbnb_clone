@@ -137,7 +137,7 @@ router.use('/becomehost',function(req, res){
 })
 
 router.use('/search_home',function(req, res){
-	console.log('@@@@@@@@ search home @@@@@@@@@@@@')
+	console.log('@@@@@@@@ search home @@@@@@@@@@@@', req.body)
 	Host.find({ location: req.body.location },function(err, host){
 		if(!err && host.length > 0){
 			let approved_listings = [];
@@ -146,6 +146,7 @@ router.use('/search_home',function(req, res){
 					approved_listings.push(host[i])
 				}
 			}
+			console.log(approved_listings)
 			res.json({
                	status:'success',
                	message : 'Listings found',
@@ -165,7 +166,7 @@ router.use('/search_home',function(req, res){
 
 router.use('/get_single_home',function(req, res){
 	console.log('@@@@@@@@ get single home @@@@@@@@@@@@')
-	Host.findOne({ _id: req.body.id },function(err, host){
+	Host.findOne({ _id: req.body.id }).populate('owner').populate('review_rating.user_id').exec(function (err, host) {
 		if(!err && host != null){
 			res.json({
                	status:'success',
@@ -226,5 +227,44 @@ router.use('/get_user_listings',function(req, res){
 		}
 	})
 })
+
+router.use('/update_user_listing',function(req, res){
+	console.log('||||||||||| update user listings ||||||||||||')
+	Host.update({ _id: req.body.id }, req.body, function(err, host) {
+		if(!err && host.nModified == 1) {
+			res.json({
+               	status:'success',
+               	message : 'Host updated successfully'
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Host updation failed'
+			})
+		}
+	})
+})
+
+router.use('/save_user_rating',function(req, res){
+	console.log('||||||||||| save user rating ||||||||||||')
+	Host.findOne({ _id: req.body.host_id }, function(err, host) {
+		let rating_arr = host.review_rating;
+		rating_arr.push(req.body);
+		Host.update({ _id: req.body.host_id }, { review_rating: rating_arr }, function(err1, host1) {
+			if(!err1 && host1.nModified == 1) {
+				res.json({
+	               	status:'success',
+	               	message : 'Review successful'
+	            })
+			} else {
+				res.json({
+					status:'fail',
+					message : 'Review failed'
+				})
+			}
+		})
+	})
+})
+
 
 module.exports = router;

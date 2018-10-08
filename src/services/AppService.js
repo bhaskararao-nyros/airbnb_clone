@@ -36,5 +36,11 @@ export default {
   },
   getUserListings (params) {
     return Api().post('/get_user_listings', params) 
+  },
+  updateHostDetails (params) {
+    return Api().post('/update_user_listing', params) 
+  },
+  saveRatingReview (params) {
+    return Api().post('/save_user_rating', params) 
   }
 }

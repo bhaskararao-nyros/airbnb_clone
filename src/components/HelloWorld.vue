@@ -490,12 +490,14 @@
          </b-col>
       </b-row>
     </div>
+    <FooterComponent/>
   </div>
 </template>
 
 <script>
 
 import HeaderComponent from '@/components/Header'
+import FooterComponent from '@/components/Footer'
 import AppService from '@/services/AppService'
 
 
@@ -550,7 +552,8 @@ export default {
     })
   },
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>

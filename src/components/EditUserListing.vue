@@ -7,6 +7,19 @@
   <div class="text-center"><h4>{{ host_name }}</h4></div>
     <b-row>
           <b-col>
+            <span>Name of the host :</span>
+            <input type="text" name="host_name" placeholder="Name your host" class="form-control" v-model="host_name">
+            <span>Location :</span>
+            <input type="text" name="property_location" id="fillout_location" @focus="filloutSearch" ref="fillout_search" class="form-control" v-model="property_location">
+            <span>Select guests :</span>
+            <select class="fillout_select" @change="changeGuests" v-model="guest_count">
+              <option v-for="guest in guests" :value="guest">{{ guest }} Guests</option>
+            </select><br>
+            <span>Select room type :</span>
+            <select id="rooms_select" class="fillout_select" @change="changeRooms" v-model="room_price">
+              <option v-for="room in rooms" :value="room.price">{{ room.name }}</option>
+            </select><br>
+            <p class="price_tag"><small>Total price :</small> &#x20B9;{{ total_price }}</p>
             <p class="text-danger" v-if="host_name_err">Property name required</p>
             <span class="bg-color">Choose number of bedrooms :</span> 
             <p class="ml-3"><b-button variant="outline-primary" @click="decreBedrms" class="beds_btns">-</b-button> {{ bedrooms.length }} <b-button variant="outline-primary" @click="increBedrms" class="beds_btns">+</b-button></p>
@@ -28,7 +41,7 @@
         <span class="bg-color">Choose number of bathrooms :</span> 
             <p class="ml-3"><b-button variant="outline-primary" @click="decreBathrms" class="beds_btns">-</b-button> {{ bathrooms.length }} <b-button variant="outline-primary" @click="increBathrms" class="beds_btns">+</b-button></p>
 
-            <div v-for="(bathrm, index) in bathrooms" :key="index">
+            <div v-for="(bathrm, index) in bathrooms" :key="'a'+ index">
          
           <b-btn size="sm" variant="outline-success" v-b-toggle="'bathroom'+ index" class="m-1">Bath Room {{ index + 1 }}</b-btn>
 
@@ -165,7 +178,7 @@
               </div>
               <div v-if="guest_count > 4">
                 Number of guests allowed : 
-                <span v-for="n in guest_count" v-if="n <= 3" :key="n">
+                <span v-for="n in guest_count" v-if="n <= 3" :key="'b'+ n">
                   <img src="../assets/img/guest.jpg" class="guest_img">
                 </span>... + {{ guest_count }}
               </div>
@@ -176,7 +189,7 @@
               <p v-if="room_price === 10000">Room type : <span class="badge">Shared Room</span></p>
             </div>
             <div>
-              <p>Total cost : <span class="badge">&#x20B9; {{ total_price }}</span></p>
+              <p>Total price : <span class="badge">&#x20B9; {{ total_price }}</span></p>
             </div>
             <div>
               <div v-for="(bedrm, index) in bedrooms" class="bedrooms_div">
@@ -227,6 +240,7 @@
               Property Images : <br>
               <span v-for="image in image_url_arr">
                 <b-img thumbnail fluid :src="image.url" alt="Thumbnail" class="property_img" />
+                <img src="../assets/img/close.png" width="20px" height="20px" class="del_img_btn" @click="delHostImage(image)">
               </span>
             </div>
             <div v-if="property_desc != ''">
@@ -236,12 +250,17 @@
             
           </b-col>
       </b-row>
+      <div class="text-center">
+        <b-button variant="primary" @click="updateHost" size="sm">Update</b-button>
+      </div>
   </div>
+  <FooterComponent />
 </div>
 </template>
 <script>
 
 import HeaderComponent from '@/components/Header'
+import FooterComponent from '@/components/Footer'
 import AppService from '@/services/AppService'
 
 export default {
@@ -269,7 +288,10 @@ export default {
       map_coordinates:{ lat:'', lng: ''},
       showDismissibleAlert: false,
       host_name: '',
-      host_name_err: false
+      host_name_err: false,
+      description_err:'',
+      guest_count: 2,
+      room_price: 10000,
     }
   },
   methods: {
@@ -288,7 +310,17 @@ export default {
         this.host_name = res.data.data.name
         this.property_desc = res.data.data.about
         this.total_price = res.data.data.price
-        // this.host = res.data.data
+        this.property_location = res.data.data.location
+        this.guest_count = res.data.data.guests
+        if (res.data.data.host_type === "Entire Place") {
+          this.room_price = 15000
+        }
+        if (res.data.data.host_type === "Private Room") {
+          this.room_price = 10000
+        }
+        if (res.data.data.host_type === "Shared Room") {
+          this.room_price = 7500
+        }
       })
     },
     changeGuests (e) {
@@ -318,6 +350,17 @@ export default {
       } else {
         this.$refs.headerComp.openLoginModal()
       }
+    },
+    filloutSearch () {
+      var autocomplete = new google.maps.places.Autocomplete(
+      (this.$refs.fillout_search),
+      {types: ['geocode']})
+
+      google.maps.event.addListener(autocomplete, 'place_changed', () => {
+          const place = autocomplete.getPlace()
+          this.property_location = place.formatted_address
+          this.map_coordinates = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng()}
+        })
     },
     decreBedrms () {
       this.bedrooms.pop()
@@ -360,6 +403,38 @@ export default {
 
       console.log('files array', this.image_url_arr)
     },
+    delHostImage (img_obj) {
+      let index = this.image_url_arr.indexOf(img_obj)
+      this.image_url_arr.splice(index, 1)
+      console.log('images arr', this.image_url_arr)
+    },
+    updateHost () {
+      let host_type = document.getElementById('room_type_blk').children[0].children[0].textContent
+
+      let data = {
+        id: this.$route.params.id,
+        name: this.host_name,
+        guests: this.guest_count,
+        host_type: host_type,
+        location: this.property_location,
+        bedrooms: this.bedrooms,
+        bathrooms: this.bathrooms,
+        images: this.image_url_arr,
+        about: this.property_desc,
+        total_price: this.total_price,
+        map_coordinates: this.map_coordinates,
+        amentities: this.amentities,
+        safety_amentities: this.safety_amentities,
+        rules: this.rules,
+        allowed_spaces: this.allowed_spaces
+      }
+      AppService.updateHostDetails(data).then(res => {
+        console.log('update host res', res)
+        if (res.status === "success") {
+          this.$router.push('/user_profile')
+        }
+      })
+    }
   },
   beforeMount () {
     this.getListingDetails()
@@ -368,7 +443,8 @@ export default {
   	
   },
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   }
 }
 </script>
@@ -383,6 +459,8 @@ export default {
   margin-top: 1%;
   background-color: #dcdec5;
   padding: 2%;
+  height: 720px;
+  overflow: scroll;
 }
 .head_component {
   background-color: #a4a77f;
@@ -405,10 +483,10 @@ export default {
   border-radius: 0px;
 }
 .fillout_select {
-  width: 100%;
+    width: 70%;
     border-radius: 0px;
     border: 1px solid #ccc;
-    padding: 3%;
+    padding: 1%;
     background-color: #fff;
     margin-top: 3%;
 }
@@ -419,7 +497,7 @@ export default {
 }
 .price_tag {
   margin-top: 3%;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: bold;
   opacity: 0.7;
 }
@@ -495,5 +573,11 @@ export default {
 .bedrooms_div, .amentities, .safety_amentities, .rules, .allowed_spaces {
   background-color: #fff;
   padding: 10px;
+}
+.del_img_btn {
+  position: relative;
+  top: -63px;
+  left: -26px;
+  cursor: pointer;
 }
 </style>

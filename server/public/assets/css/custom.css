@@ -59,9 +59,14 @@
 	margin-left: -14%;
 	color: #fff;
 }
+.side_bar_ul li a {
+	color: #fff;
+}
+.side_bar_ul li a:hover {
+	text-decoration: none;
+}
 .side_bar_ul li:hover {
-	background-color: #f2f2f2;
-	color: #4c4c4c;
+	background-color: #928c8c;
 }
 .side_bar_ul {
 	margin-left: 0px;

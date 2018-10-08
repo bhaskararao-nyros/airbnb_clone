@@ -327,6 +327,8 @@ export default {
       		const place = autocomplete.getPlace()
       		this.property_location = place.formatted_address
       		this.map_coordinates = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng()}
+
+      		console.log('map coordinates', this.map_coordinates)
       	})
   	},
   	changeGuests (e) {
@@ -574,9 +576,6 @@ export default {
 }
 .list_heading {
 	margin-bottom: 2%;
-}
-.desc_textarea {
-	width: 75%;
 }
 .description_txt {
 	border: 1px solid #ccc;

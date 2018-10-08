@@ -21,6 +21,7 @@
                 <table id="listings-table" class="table table-responsive">
                     <thead>
                         <th>Pictures</th>
+                        <th>Name</th>
                         <th>Location</th>
                         <th>Price</th>
                         <th>Map</th>
@@ -36,6 +37,7 @@
                             var images =  JSON.stringify(listing[i]) %>
                             <tr>
                                 <td><img id="img_tag" onclick="showImages('<%= images %>')" src="<%= listing[i].images[0].url %>" width="70px"></td>
+                                <td><%= listing[i].name %></td>
                                 <td><%= listing[i].location %></td>
                                 <td>&#8377; <%= listing[i].price %></td>
                                 <td>
@@ -44,7 +46,7 @@
                                 </td>
                                 <td><%= listing[i].owner.firstname %> <%= listing[i].owner.lastname %></td>
                                 <td><%= listing[i].guests %></td>
-                                <td><%= listing[i].room_type %> </td>
+                                <td><%= listing[i].host_type %> </td>
                                 <td><%= listing[i].about %></td>
                                 <% if (listing[i].approved === 0) { %>
                                     <td><button onclick="approveListing('<%= listing[i]._id %>')" class="btn btn-success btn-xs">Approve</button></td>
