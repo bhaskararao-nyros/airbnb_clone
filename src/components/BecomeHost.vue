@@ -28,14 +28,6 @@
 	    </b-row>
   	</div>
   	<div class="becomehost_fillout" v-if="!becomehost_block">
-  		<div class="alert_blk">
-  			<b-alert variant="danger"
-             	dismissible
-             	:show="showDismissibleAlert"
-             	@dismissed="showDismissibleAlert=false">
-	      		Listing created successfully
-	    	</b-alert>
-  		</div>
   		<h3 class="text-center list_heading">Listing Creation</h3>
   		<b-row>
 	        <b-col>
@@ -189,7 +181,7 @@
     				<p class="text-danger" v-if="description_err">Property description required</p>
 	        	</div>
 	        </b-col>
-	        <b-col class="fillout_right_blk">
+	        <b-col class="fillout_right_blk" cols="6">
 	        	<div class="guests_blk">
 		        	<div v-if="guest_count <= 4">
 		        		<span>Number of guests allowed : </span>
@@ -264,13 +256,28 @@
 	        			<b-img thumbnail fluid :src="image.url" alt="Thumbnail" class="property_img" />
 	        		</span>
 	        	</div>
-	        	<div v-if="property_desc != ''">
+	        	<div v-if="property_desc != ''" class="property_desc_blk">
 	        		Property description : 
-	        		<p class="description_txt">{{ property_desc }}</p>
+	        		<b-form-textarea
+                     	placeholder="Enter something about property"
+                     	:rows="3"
+                     	class="desc_textarea"
+                     	disabled
+                     	:value="property_desc"
+                     	:max-rows="6">
+    				</b-form-textarea>
 	        	</div>
 	        	
 	        </b-col>
 	    </b-row>
+	    <div class="alert_blk">
+  			<b-alert variant="success"
+             	dismissible
+             	:show="showDismissibleAlert"
+             	@dismissed="showDismissibleAlert=false">
+	      		Listing created successfully
+	    	</b-alert>
+  		</div>
 	    <div class="text-center">
 	    	<b-button size="sm" @click="becomehost_block = true" variant="default">Back</b-button>
 	    	<b-button size="sm" @click="submitListing" variant="primary">submit listing</b-button>
@@ -583,6 +590,7 @@ export default {
 }
 .alert_blk {
 	text-align: center;
+	margin-top: 1%;
 }
 .bedrooms_div, .amentities, .safety_amentities, .rules, .allowed_spaces {
 	background-color: #fff;

@@ -245,7 +245,13 @@
             </div>
             <div v-if="property_desc != ''">
               Property description : 
-              <p class="description_txt">{{ property_desc }}</p>
+              <b-form-textarea
+                  placeholder="Enter something about property"
+                  :rows="3"
+                  :value="property_desc"
+                  class="desc_textarea"
+                  :max-rows="6">
+            </b-form-textarea>
             </div>
             
           </b-col>
@@ -561,7 +567,7 @@ export default {
   margin-bottom: 2%;
 }
 .desc_textarea {
-  width: 75%;
+  width: 100%;
 }
 .description_txt {
   border: 1px solid #ccc;

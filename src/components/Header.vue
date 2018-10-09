@@ -45,7 +45,7 @@
             </b-form-input>
             <span class="text-danger" v-if="login_email_err">Email required</span>
             <b-form-input v-model="signin.password"
-              type="text"
+              type="password"
               placeholder="Password">
             </b-form-input>
             <span class="text-danger" v-if="login_pass_err">Password required</span>
@@ -477,5 +477,10 @@ export default {
 }
 div[style] {
     left: -106px !important;
+}
+.dropdown-menu {
+  position: relative !important;
+  top: 10px !important;
+  left: -66px !important;
 }
 </style>

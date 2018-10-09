@@ -266,5 +266,32 @@ router.use('/save_user_rating',function(req, res){
 	})
 })
 
+router.use('/get_all_listings',function(req, res){
+	console.log('@@@@@@@@ get all listings @@@@@@@@@@@@')
+	Host.find({},function(err, host){
+		if(!err && host.length > 0){
+			let approved_listings = [];
+			for (var i = 0; i < host.length; i++) {
+				if (host[i].approved === 1) {
+					approved_listings.push(host[i])
+				}
+			}
+			console.log(approved_listings)
+			res.json({
+               	status:'success',
+               	message : 'Listings found',
+               	data : approved_listings
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'No listings found'
+			})
+		}
+	
+
+	})
+})
+
 
 module.exports = router;

@@ -24,8 +24,8 @@
 
       <b-row class="homes_around_world_blk">
        <b-col md="12 head"><span>Homes around the world</span></b-col>
-         <b-col md="3">
-          <b-carousel id="carousel1"
+         <b-col md="3" v-for="listing in listings.slice(0, 4)" :key="listing._id">
+          <b-carousel :id="listing._id"
               style="text-shadow: 1px 1px 2px #333;"
               controls
               indicators
@@ -34,153 +34,21 @@
               
           >
 
-            <!-- Text slides with image -->
-            <b-carousel-slide>
+            <b-carousel-slide v-for="image in listing.images">
               <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
+             :src="image.url" alt="image slot">
             </b-carousel-slide>
 
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
           </b-carousel>
-          <p><b>Lake View Room - Hauz Khas Village</b></p>
+          <a :href="'#/full-details/'+ listing._id"><p><b>{{ listing.name }}</b></p></a>
          </b-col>
       </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-
-          </b-carousel>
-          <p><b>Sea Hut Homestay with Aircon..</b></p>
-          <p><span class="glyphicon glyphicon-star"></span></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>WOODEN CHALET ON THE RIVER BANKS</b></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>3 Bed Apartment Near Baga And Calangute</b></p>
-         </b-col>
       </b-row>
+
       <b-row class="homes_around_world_blk">
-       <b-col md="12 head"><span>Homes around the world</span></b-col>
-         <b-col md="3">
-          <b-carousel id="carousel1"
+       <b-col md="12 head"><span>Homes near sea shore</span></b-col>
+         <b-col md="3" v-for="listing in listings.slice(4, 8)" :key="listing._id">
+          <b-carousel :id="listing._id"
               style="text-shadow: 1px 1px 2px #333;"
               controls
               indicators
@@ -189,305 +57,38 @@
               
           >
 
-            <!-- Text slides with image -->
-            <b-carousel-slide>
+            <b-carousel-slide v-for="image in listing.images">
               <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
+             :src="image.url" alt="image slot">
             </b-carousel-slide>
 
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
           </b-carousel>
-          <p><b>Lake View Room - Hauz Khas Village</b></p>
+          <a :href="'#/full-details/'+ listing._id"><p><b>{{ listing.name }}</b></p></a>
          </b-col>
       </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-
-          </b-carousel>
-          <p><b>Sea Hut Homestay with Aircon..</b></p>
-          <p><span class="glyphicon glyphicon-star"></span></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>WOODEN CHALET ON THE RIVER BANKS</b></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>3 Bed Apartment Near Baga And Calangute</b></p>
-         </b-col>
       </b-row>
+
       <b-row class="homes_around_world_blk">
-       <b-col md="12 head"><span>Homes around the world</span></b-col>
-         <b-col md="3">
-          <b-carousel id="carousel1"
+       <b-col md="12 head"><span>Homes near nature hills</span></b-col>
+         <b-col md="3" v-for="listing in listings.slice(8, 12)" :key="listing._id">
+          <b-carousel :id="listing._id"
               style="text-shadow: 1px 1px 2px #333;"
               controls
               indicators
               background="#ababab"
-              :interval="4000"
+              :interval="9000"
               
           >
 
-            <!-- Text slides with image -->
-            <b-carousel-slide>
+            <b-carousel-slide v-for="image in listing.images">
               <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
+             :src="image.url" alt="image slot">
             </b-carousel-slide>
 
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
           </b-carousel>
-          <p><b>Lake View Room - Hauz Khas Village</b></p>
+          <a :href="'#/full-details/'+ listing._id"><p><b>{{ listing.name }}</b></p></a>
          </b-col>
       </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-
-          </b-carousel>
-          <p><b>Sea Hut Homestay with Aircon..</b></p>
-          <p><span class="glyphicon glyphicon-star"></span></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>WOODEN CHALET ON THE RIVER BANKS</b></p>
-         </b-col>
-      </b-col>
-      <b-col md="3">
-          <b-carousel id="carousel1"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="4000"
-              
-          >
-
-            <!-- Text slides with image -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide1.jpg" alt="image slot">
-            ></b-carousel-slide>
-
-            <!-- Slides with custom text -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide2.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with image only -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide3.jpg" alt="image slot">
-            </b-carousel-slide>
-
-            <!-- Slides with img slot -->
-            <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-            <b-carousel-slide>
-              <img slot="img" class="w-100" width="1024" height="180"
-             src="../assets/img/slide4.jpeg" alt="image slot">
-            </b-carousel-slide>
-          </b-carousel>
-          <p><b>3 Bed Apartment Near Baga And Calangute</b></p>
-         </b-col>
       </b-row>
     </div>
     <FooterComponent/>
@@ -509,7 +110,8 @@ export default {
       googleSignInParams: {
         client_id: '266477204854-qhppbtd5r0l1laeu703bl7m0m6068si0.apps.googleusercontent.com'
       },
-      location_null_err:false
+      location_null_err:false,
+      listings: []
     }
   },
   name: 'HelloWorld',
@@ -518,9 +120,17 @@ export default {
   methods: {
     onKeyUpSearch () {
       this.location_null_err = false
+    },
+    getAllListings () {
+      AppService.getAllListings().then(res => {
+        console.log('get all listings', res.data.data)
+        this.listings = res.data.data
+      })
     }
   },
   mounted () {
+
+    this.getAllListings()
 
     var autocomplete = new google.maps.places.Autocomplete(
       (this.$refs.autocomplete),
@@ -612,10 +222,14 @@ export default {
   opacity: 0.8;
 }
 .homes_around_world_blk .head {
-  margin-bottom: 2%;
+  margin-top: 1%;
+  margin-bottom: 1%;
 }
 .homes_around_world_blk {
   margin-top: 2%;
+}
+.homes_around_world_blk a {
+  color: #363f48;
 }
 .home_search {
   height: 800px;

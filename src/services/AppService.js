@@ -43,4 +43,8 @@ export default {
   saveRatingReview (params) {
     return Api().post('/save_user_rating', params) 
   }
+  ,
+  getAllListings () {
+    return Api().get('/get_all_listings') 
+  }
 }

@@ -14,7 +14,7 @@
 
 	            <!-- Text slides with image -->
 	            <b-carousel-slide v-for="(image, index) in host_images" :key="index">
-	              <img slot="img" class="w-100" width="1024" height="500"
+	              <img slot="img" class="w-100" width="1024" height="600"
 	             :src="image.url" alt="image slot">
 	            </b-carousel-slide>
 
