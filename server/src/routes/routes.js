@@ -3,6 +3,7 @@ const router = express.Router();
 
 const User = require('../models/user');
 const Host = require('../models/host');
+const Chat = require('../models/chat');
 
 router.use('/signup',function(req, res){
 	console.log('|||||||| Signup |||||||||||')
@@ -276,7 +277,6 @@ router.use('/get_all_listings',function(req, res){
 					approved_listings.push(host[i])
 				}
 			}
-			console.log(approved_listings)
 			res.json({
                	status:'success',
                	message : 'Listings found',
@@ -293,5 +293,38 @@ router.use('/get_all_listings',function(req, res){
 	})
 })
 
+router.use('/get_all_users',function(req, res){
+	User.find({}, function (err, users) {
+		if (!err && users != null) {
+			res.json({
+               	status:'success',
+               	message : 'Users fetched',
+               	data : users
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'No users found'
+			})
+		}
+	})
+})
+
+router.use('/get_solo_chat',function(req, res){
+	Chat.find({ user_id: req.body.user_id, receiver_id: req.body.receiver_id }, function (err, chat) {
+		if (!err && chat != null) {
+			res.json({
+               	status:'success',
+               	message : 'Chat fetched',
+               	data : chat
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'No chat found'
+			})
+		}
+	})
+})
 
 module.exports = router;

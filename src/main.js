@@ -8,7 +8,8 @@ import Notifications from 'vue-notification'
 import Popover from 'vue-js-popover'
 import BootstrapVue from 'bootstrap-vue'
 import GSignInButton from 'vue-google-signin-button'
-import VueGeolocation from 'vue-browser-geolocation';
+import VueGeolocation from 'vue-browser-geolocation'
+import VueSocketio from 'vue-socket.io'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -23,6 +24,7 @@ Vue.use(Popover)
 Vue.use(BootstrapVue)
 Vue.use(GSignInButton)
 Vue.use(VueGeolocation)
+Vue.use(VueSocketio, 'http://10.90.90.55:8081')
 
 Vue.config.productionTip = false
 

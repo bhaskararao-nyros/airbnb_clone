@@ -6,6 +6,7 @@ import ListingsPage from '@/components/ListingsPage'
 import FullDetailsPage from '@/components/FullDetailsPage'
 import UserProfile from '@/components/UserProfile'
 import EditUserListing from '@/components/EditUserListing'
+import Chat from '@/components/Chat'
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/edit_user_listing/:id',
       name: 'EditUserListing',
       component: EditUserListing
+    },
+    {
+      path: '/chat',
+      name: 'Chat',
+      component: Chat
     }
   ]
 })

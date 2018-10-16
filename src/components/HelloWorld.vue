@@ -34,7 +34,7 @@
               
           >
 
-            <b-carousel-slide v-for="image in listing.images">
+            <b-carousel-slide v-for="(image, index) in listing.images" :key="'sliding1'+ index">
               <img slot="img" class="w-100" width="1024" height="180"
              :src="image.url" alt="image slot">
             </b-carousel-slide>
@@ -57,7 +57,7 @@
               
           >
 
-            <b-carousel-slide v-for="image in listing.images">
+            <b-carousel-slide v-for="(image, index) in listing.images" :key="'sliding2'+ index">
               <img slot="img" class="w-100" width="1024" height="180"
              :src="image.url" alt="image slot">
             </b-carousel-slide>
@@ -72,15 +72,14 @@
        <b-col md="12 head"><span>Homes near nature hills</span></b-col>
          <b-col md="3" v-for="listing in listings.slice(8, 12)" :key="listing._id">
           <b-carousel :id="listing._id"
-              style="text-shadow: 1px 1px 2px #333;"
-              controls
-              indicators
-              background="#ababab"
-              :interval="9000"
-              
+            style="text-shadow: 1px 1px 2px #333;"
+            controls
+            indicators
+            background="#ababab"
+            :interval="9000"
           >
 
-            <b-carousel-slide v-for="image in listing.images">
+            <b-carousel-slide v-for="(image, index) in listing.images" :key="'sliding3'+ index">
               <img slot="img" class="w-100" width="1024" height="180"
              :src="image.url" alt="image slot">
             </b-carousel-slide>
@@ -94,6 +93,7 @@
     <FooterComponent/>
   </div>
 </template>
+
 
 <script>
 
@@ -160,6 +160,15 @@ export default {
         })
       }
     })
+  },
+  sockets:{
+    connect: function(){
+      console.log('socket connected')
+    },
+    customEmit: function(){
+      // this.$socket.emit('send_message', { message: "Hi... this is my first message" });
+      console.log("message fired------------")
+    }
   },
   components: {
     HeaderComponent,
