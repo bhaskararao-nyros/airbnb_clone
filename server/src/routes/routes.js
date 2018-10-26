@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../models/user');
 const Host = require('../models/host');
 const Chat = require('../models/chat');
+const Notifications = require('../models/notifications');
 
 router.use('/signup',function(req, res){
 	console.log('|||||||| Signup |||||||||||')
@@ -322,6 +323,59 @@ router.use('/get_solo_chat',function(req, res){
 			res.json({
 				status:'fail',
 				message : 'No chat found'
+			})
+		}
+	})
+})
+
+router.use('/get_notifications',function(req, res){
+	console.log('get notifications', req.body)
+	Notifications.find({ user_id: req.body.user_id }).populate('listing_id').populate('user_id').exec(function (err, notif) {
+		if (!err && notif.length > 0) {
+			res.json({
+               	status:'success',
+               	message : 'Notifications fetched',
+               	data : notif
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Notifications not found'
+			})
+		}
+	})
+})
+
+router.use('/get_new_notifications',function(req, res){
+	console.log('get notifications')
+	Notifications.find({ user_id: req.body.user_id, status: 0 }).populate('listing_id').populate('user_id').exec(function (err, notif) {
+		if (!err && notif.length > 0) {
+			res.json({
+               	status:'success',
+               	message : 'Notifications fetched',
+               	data : notif
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Notifications not found'
+			})
+		}
+	})
+})
+
+router.use('/set_notif_as_viewed',function(req, res){
+	console.log('set notifications as viewed')
+	Notifications.update({ user_id: req.body.user_id }, { status: 1 }, function (err, notif) {
+		if (!err) {
+			res.json({
+               	status:'success',
+               	message : 'Notifications set as viewed'
+            })
+		} else {
+			res.json({
+				status:'fail',
+				message : 'Error occured'
 			})
 		}
 	})

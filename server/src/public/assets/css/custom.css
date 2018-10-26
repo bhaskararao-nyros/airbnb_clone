@@ -1,0 +1,140 @@
+#loginimg {
+	display: block;
+	margin: auto;
+}
+.panel-default {
+	padding: 50px;
+	width: 50%;
+	margin: auto;
+	display: block;	
+	box-shadow: 0px 3px 10px #66afe9;
+	background-color: #f2f2f2;
+}
+.inputcontrol {
+	border:none;
+	border-bottom: 1px solid #66afe9;
+	height: 50px;
+	border-radius: 0px;
+	box-shadow: none;
+}
+#heading {
+	margin: 0px;
+	margin-bottom: 25px;
+	opacity: 0.9;
+	color: #1e80bf;
+	text-align: center;
+}
+#nametext, #passtext, #emailtext, #cnftext {
+	color: #66afe9;
+}
+#nameErr, #passErr, #emailErr, #cnfErr {
+	color: red;
+}
+#login_btn {
+	border-color: #fff;
+	background-color: #66afe9;
+	margin-top: 15px;
+	padding: 8px 50px 8px 50px;
+	font-size: 18px;
+}
+.login_btn_div {
+	text-align: center;
+	margin-top: 8%;
+}
+.container {
+	margin-top: 5%;
+}
+/*.dashboard_header {
+	padding: 4%;
+	background-color: #4c4c4c;
+	font-size: 20px;
+	color: #fff;
+}
+.side_bar_ul li {
+	list-style: none;
+	padding: 4%;
+	margin: 2px;
+	font-size: 17px;
+	cursor: pointer;
+	margin-left: -14%;
+	color: #fff;
+}
+.side_bar_ul li a {
+	color: #fff;
+}
+.side_bar_ul li a:hover {
+	text-decoration: none;
+}
+.side_bar_ul li:hover {
+	background-color: #928c8c;
+}
+.side_bar_ul {
+	margin-left: 0px;
+	background-color: #4c4c4c;
+	height: 715px;
+}
+.admin_navbar {
+	border-radius: 0px;
+	background-color: #4c4c4c;
+	border-color: transparent;
+}
+.admin_navbar ul li a.dropdown-toggle {
+	color: #fff !important;
+}
+.navbar-brand {
+	color: #fff !important;
+}
+.admin_navbar .navbar-nav > .open > a:focus {
+	color: #4c4c4c !important;
+}
+.content_blk {
+	background-color: #f2f2f2;
+	height: 715px;
+	margin-top: -1%;
+	padding: 1%;
+	overflow: scroll;
+}
+.users_blk {
+	padding: 4%;
+	background-color: #52a4aa;
+	border-radius: 8px;
+	border: 3px solid #fff;
+	height: 150px;
+}
+.listings_blk {
+	padding: 4%;
+	background-color: #64c273;
+	border-radius: 8px;
+	border: 3px solid #fff;
+	height: 150px;
+}
+.users_head, .listings_head {
+	font-size: 25px;
+	color: #fff;
+}
+.users_count {
+	float: right;
+	font-size: 30px;
+	font-weight: bold;
+	color: #fff;
+}
+#modal_images_body {
+	height: 400px;
+	overflow: scroll;
+}*/
+
+
+
+
+.img-circle {
+	border-radius: 35px;
+}
+.amentities_imgs {
+	padding: 5px;
+	margin: 2px;
+	margin-right: 4%;
+}
+.card-header {
+	color: #443838;
+	font-weight: bold;
+}

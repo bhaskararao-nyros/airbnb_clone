@@ -10,7 +10,9 @@ import BootstrapVue from 'bootstrap-vue'
 import GSignInButton from 'vue-google-signin-button'
 import VueGeolocation from 'vue-browser-geolocation'
 import VueSocketio from 'vue-socket.io'
+import VDateRange from 'vuetify-daterange-picker'
 
+import 'vuetify-daterange-picker/dist/vuetify-daterange-picker.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'fullcalendar-scheduler'
@@ -18,6 +20,8 @@ import 'fullcalendar/dist/fullcalendar.min.css'
 import 'fullcalendar-scheduler/dist/scheduler.min.css'
 import 'mdbvue/build/css/mdb.css'
 
+
+Vue.use(VDateRange)
 Vue.use(FullCalendar)
 Vue.use(Notifications)
 Vue.use(Popover)

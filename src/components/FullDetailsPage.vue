@@ -19,6 +19,7 @@
 	            </b-carousel-slide>
 
           	</b-carousel>
+          	<b-button variant="default" class="book_now_btn" @click="show_booking_modal=true">Book Now</b-button>
           	<div class="owner_details_blk">
           		<h3 class="host_name">{{ host.name }} -  <span><img :src="host.owner.profile_pic" width="40px" height="40px"> <small>{{ host.owner.firstname }} {{ host.owner.lastname }} </small></span></h3>
           	</div>
@@ -151,6 +152,34 @@
 			</b-tabs>
 	  	</div>
 	  	<FooterComponent />
+
+	  	<b-modal id="booking_modal" v-model="show_booking_modal"
+             title="Booking"
+             header-bg-variant="primary"
+             header-text-variant="dark"
+             body-bg-variant="light"
+             body-text-variant="dark"
+             footer-bg-variant="light"
+             footer-text-variant="dark">
+	       <b-container fluid>
+	         <div>
+	           <label>Number of guests to stay</label>
+	           	<div>
+	           		<b-button variant="primary" :disabled="decre_btn_disabled" @click="decreGuests" class="beds_decre_btn">-</b-button> {{ guests_count }}
+	           		<b-button variant="primary" :disabled="incre_btn_disabled" @click="increGuests" class="beds_incre_btn">+</b-button>
+	           	</div>
+	           	<div>
+	           		<label>Check in & Check out</label>
+	           		<date-picker lang="en" v-model="checkin_out_date" range :shortcuts="shortcuts"></date-picker>
+	           	</div>
+	         </div>
+	       </b-container>
+	       <div slot="modal-footer" class="w-100 booking_modal_footer">
+	         <b-btn size="sm" class="float-right" variant="primary" @click="show_booking_modal=false">
+	           Close
+	         </b-btn>
+	       </div>
+	    </b-modal>
   	</div>
 </template>
 
@@ -159,12 +188,20 @@
 import HeaderComponent from '@/components/Header'
 import FooterComponent from '@/components/Footer'
 import StarRating from 'vue-star-rating'
+import DatePicker from 'vue2-datepicker'
 import AppService from '@/services/AppService'
 
 export default {
   name: 'FullDetailsPage',
   data () {
     return {
+    	checkin_out_date:'',
+    	checkin_date: "2017-09-05",
+    	checkout_date: "2017-09-05",
+    	incre_btn_disabled: false,
+    	decre_btn_disabled: true,
+    	guests_count: 1,
+    	show_booking_modal: false,
     	host:[],
     	host_images:[],
     	map_coordinates:{},
@@ -210,6 +247,26 @@ export default {
   	},
   	setRating (rating) {
   		this.host_rating = rating
+  	},
+  	increGuests () {
+  		if (this.host.guests > this.guests_count) {
+  			this.guests_count += 1
+  			if (this.guests_count > 1) {
+  				this.decre_btn_disabled = false
+  			}
+  		} else {
+  			this.incre_btn_disabled = true
+  		}
+  	},
+  	decreGuests () {
+  		if (this.guests_count > 1) {
+  			this.guests_count -= 1
+  			if (this.guests_count < this.host.guests) {
+  				this.incre_btn_disabled = false
+  			}
+  		} else {
+  			this.decre_btn_disabled = true
+  		}
   	}
   },
   mounted () {
@@ -235,7 +292,8 @@ export default {
   components: {
     HeaderComponent,
     FooterComponent,
-    StarRating
+    StarRating,
+    DatePicker
   }
 }
 </script>
@@ -281,7 +339,6 @@ export default {
 	margin-bottom: 0px;
 }
 .host_name {
-	font-weight: bold;
 	opacity: 0.8;
 }
 .owner_details_blk {
@@ -320,5 +377,30 @@ export default {
 .quoted_user {
 	font-weight: bold;
 	opacity: 0.8;
+}
+.book_now_btn {
+	position: relative;
+	top: -58px;
+	float: right;
+	border: 1px solid #fff;
+}
+.modal-footer {
+	padding: 5px !important;
+}
+.beds_incre_btn {
+	border-radius: 21px;
+	padding: 0px;
+	padding-left: 14px;
+	padding-right: 11px;
+	font-size: 25px;
+	font-weight: bold;
+}
+.beds_decre_btn {
+	border-radius: 28px;
+	padding: 0px;
+	padding-left: 16px;
+	padding-right: 15px;
+	font-size: 25px;
+	font-weight: bold;
 }
 </style>

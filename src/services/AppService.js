@@ -52,5 +52,14 @@ export default {
   },
   getSoloChat (params) {
     return Api().post('/get_solo_chat', params) 
+  },
+  getNotifications (params) {
+    return Api().post('/get_notifications', params) 
+  },
+  getNewNotifications (params) {
+    return Api().post('/get_new_notifications', params) 
+  },
+  setNotifAsViewed (params) {
+    return Api().post('/set_notif_as_viewed', params) 
   }
 }

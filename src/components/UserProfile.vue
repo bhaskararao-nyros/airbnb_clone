@@ -51,7 +51,7 @@
 	        			<p class="label">{{ user.firstname }}</p>
 			        	<p class="label">{{ user.lastname }}</p>
 			        	<p class="label">{{ social_email }}</p>
-			        	<p class="label">{{ social_pass }}</p>
+			        	<p class="label">**********</p>
 	        		</b-col>
 	        		<b-col cols="6" v-if="edit_user">
 	        			<p><input type="text" v-model="user_fname" name="firstname" class="form-control"></p>

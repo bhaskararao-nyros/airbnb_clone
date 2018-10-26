@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const path = require('path');
 const store = require('store');
 const http = require('http');
+const engine = require('ejs-locals');
 
 const port = process.env.PORT || 8081;
 
@@ -49,9 +50,10 @@ io.on('connection', (socket) => {
 	})
 })
 
-
-
+app.engine('ejs', engine);
+app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}))
 app.use(morgan('combined'))
 app.use(bodyParser.json({limit: '50mb', extended: true}))
@@ -66,11 +68,7 @@ db.once("open", function(callback){
   console.log("Connection Succeeded");
 });
 
-app.use(express.static(path.join(__dirname, 'images')));
-app.use(express.static(path.join(__dirname, '../public/assets')));
-
-app.use(express.static(path.join(__dirname, 'dist')));
-app.use(express.static(path.join(__dirname, 'views')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(route);
 app.use(admin);

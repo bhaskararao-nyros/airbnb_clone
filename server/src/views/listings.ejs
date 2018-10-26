@@ -1,0 +1,84 @@
+<% include navbar.ejs %>
+<div id="wrapper">
+    <% include sidebar.ejs %>
+    <div id="content-wrapper">
+      <div class="container-fluid">
+          <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/admin">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item active">Listings</li>
+        </ol>
+
+        <!-- DataTables Example -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fas fa-table"></i>
+              Listings</div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Location</th>
+                      <th style="width: 45px;">Price</th>
+                      <th>Images</th>
+                      <th>Tenant</th>
+                      <th style="width: 80px;">Action</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  <% for(var i = 0; i < listing.length; i++) { 
+                    var images =  JSON.stringify(listing[i]) %>
+                    <tr>
+                        <td><%= listing[i].name %></td>
+                        <td><%= listing[i].location %></td>
+                        <td>&#8377; <%= listing[i].price %></td>
+                        <td><img id="img_tag" onclick="showImages('<%= images %>')" src="<%= listing[i].images[0].url %>" width="70px"></td>
+                        <td><%= listing[i].owner.firstname %> <%= listing[i].owner.lastname %></td>
+                        <% if (listing[i].approved === 0) { %>
+                            <td><button onclick="approveListing('<%= listing[i]._id %>')" class="btn btn-success btn-sm"><i class="fas fa-fw fa-check"></i></button>&nbsp;<a href="listing_in_detail/<%= listing[i]._id %>" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-eye"></i></a></td>
+                        <% } %>
+                        <% if (listing[i].approved === 1) { var listing_obj = JSON.stringify(listing[i]); %>
+                            <td><button class="btn btn-danger btn-sm"  onclick="openUnapprovalModal('<%= listing_obj %>')"><i class="fas fa-fw fa-times"></i></button>&nbsp;<a href="listing_in_detail/<%= listing[i]._id %>" class="btn btn-primary btn-sm"><i class="fas fa-fw fa-eye"></i></a></td>
+                        <% } %>
+                        <td><% if (listing[i].approved === 1) { %><span style="color: green;">Approved</span><% } else { %><span style="color: red;">Not approved</span><% } %></td>
+                    </tr>
+                  <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+    <% include footer.ejs %>
+    <script src="/assets/js/listings.js"></script>
+
+     <div id="unapproval_modal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header" style="display: initial;">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Reason for unapproval</h4>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="listing_id" id="listing_id">
+            <input type="hidden" name="user_id" id="user_id">
+            <p>Write a reason for unapproval:</p>
+            <textarea cols="50" rows="5" id="unapproval_reason" placeholder="write reason here">
+              
+            </textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">Close</button>
+            <button type="button" onclick="unapprovalListing()" class="btn btn-sm btn-primary">Submit</button>
+          </div>
+        </div>
+
+      </div>
+    </div>

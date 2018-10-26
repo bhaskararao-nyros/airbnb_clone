@@ -7,6 +7,7 @@ import FullDetailsPage from '@/components/FullDetailsPage'
 import UserProfile from '@/components/UserProfile'
 import EditUserListing from '@/components/EditUserListing'
 import Chat from '@/components/Chat'
+import Notifications from '@/components/Notifications'
 
 import * as VueGoogleMaps from 'vue2-google-maps'
 
@@ -56,6 +57,11 @@ export default new Router({
       path: '/chat',
       name: 'Chat',
       component: Chat
+    },
+    {
+      path: '/notifications',
+      name: 'Notifications',
+      component: Notifications
     }
   ]
 })

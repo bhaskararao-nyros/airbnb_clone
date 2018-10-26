@@ -1,0 +1,216 @@
+<% include navbar.ejs %>
+<div id="wrapper">
+    <% include sidebar.ejs %>
+    <div id="content-wrapper">
+      <div class="container-fluid">
+          <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="/admin">Dashboard</a>
+          </li>
+          <li class="breadcrumb-item"><a href="/listings">Listings</a></li>
+          <li class="breadcrumb-item active"><%= listing.name %></li>
+        </ol>
+    <div class="card mb-3">
+      <div class="card-header" style="color: #ff7500;"><%= listing.name %></div>
+      <div class="card-body">
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-header">Amentities</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.amentities.wifi) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/wifi.png" width="70px" height="70px" title="Wi-fi">
+                  <% } %>
+                  <% if (listing.amentities.tv) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/tv.png" width="70px" height="70px" title="Tv">
+                  <% } %>
+                  <% if (listing.amentities.ac) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/ac.png" width="70px" height="70px" title="Ac">
+                  <% } %>
+                  <% if (listing.amentities.pets) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/pet.png" width="70px" height="70px" title="Pets">
+                  <% } %>
+                  <% if (listing.amentities.hair_dryer) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/hair_dryer.png" width="70px" height="70px" title="Hair dryer">
+                  <% } %>
+                  <% if (listing.amentities.iron) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/iron.jpg" width="70px" height="70px" title="Iron">
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3">
+              <div class="card-header">Rules</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.rules.smoking) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/no-smoking.jpg" width="70px" height="70px" title="No smoking">
+                  <% } %>
+                  <% if (listing.rules.events) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/no-event.png" width="70px" height="70px" title="No events">
+                  <% } %>
+                  <% if (listing.rules.parties) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/no-party.png" width="70px" height="70px" title="No parties">
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-8">
+            <div class="card mb-3">
+              <div class="card-header">Allowed spaces</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.allowed_spaces.pvt_living_room) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/pvt-room.png" width="70px" height="70px" title="Private living room">
+                  <% } %>
+                  <% if (listing.allowed_spaces.pool) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/pool.png" width="70px" height="70px" title="Pool">
+                  <% } %>
+                  <% if (listing.allowed_spaces.kitchen) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/kitchen.png" width="70px" height="70px" title="Kitchen">
+                  <% } %>
+                  <% if (listing.allowed_spaces.gym) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/gym.png" width="70px" height="70px" title="Gym">
+                  <% } %>
+                  <% if (listing.allowed_spaces.laundry_washer) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/laundry-washer.png" width="70px" height="70px" title="Laundry Washer">
+                  <% } %>
+                  <% if (listing.allowed_spaces.laundry_dryer) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/laundry-dryer.png" width="70px" height="70px" title="Laundry dryer">
+                  <% } %>
+                  <% if (listing.allowed_spaces.hot_tub) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/hot-tub.png" width="70px" height="70px" title="Hot tub">
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card mb-3">
+              <div class="card-header">Safety amentities</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.safety_amentities.fire_safety) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/fire-safety.png" width="70px" height="70px" title="Fire safety">
+                  <% } %>
+                  <% if (listing.safety_amentities.fist_aid_kit) { %>
+                    <img class="img-thumbnail amentities_imgs" src="/assets/images/fist-aid-kit.png" width="70px" height="70px" title="First aid kit">
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">Bedrooms</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.bed_rooms.length < 5) { %>
+                    <% for (var i = 0; i < listing.bed_rooms.length; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/bedroom.png" width="70px" height="70px">
+                  <% } } %>
+                  <% if (listing.bed_rooms.length > 4) { %>
+                    <% for (var i = 0; i < 4; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/bedroom.png" width="70px" height="70px"> 
+                    <% } %>
+                    <big>+ <%= listing.bed_rooms.length %></big>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">Bathrooms</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.bath_rooms.length < 5) { %>
+                    <% for (var i = 0; i < listing.bath_rooms.length; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/bathroom.png" width="70px" height="70px">
+                  <% } } %>
+                  <% if (listing.bath_rooms.length > 4) { %>
+                    <% for (var i = 0; i < 4; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/bathroom.png" width="70px" height="70px"> 
+                    <% } %>
+                    <big>+ <%= listing.bath_rooms.length %></big>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">Guests</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.guests < 5) { %>
+                    <% for (var i = 0; i < listing.guests; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/guest.png" width="70px" height="70px">
+                    <% } %>
+                  <% } %>
+                  <% if (listing.guests > 4) { %>
+                    <% for (var i = 0; i < 4; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="/assets/images/guest.png" width="70px" height="70px"> 
+                    <% } %>
+                    <big>+ <%= listing.guests %></big>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-3">
+              <div class="card-header">Property images</div>
+              <div class="card-body">
+                <div class="row">
+                  <% if (listing.images.length > 0) { %>
+                    <% for (var i = 0; i < listing.images.length; i++) { %>
+                      <img class="img-thumbnail amentities_imgs" src="<%= listing.images[i].url %>" width="150px" height="100px">
+                    <% } %>
+                  <% } %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="card mb-3">
+            <div class="card-header">Other details</div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-6">
+                  <p><b>Price:</b> &#x20B9; <%= listing.price %></p>
+                  <p><b>Location:</b> <%= listing.location %></p>
+                  <p><b>Host type:</b> <%= listing.host_type %></p>
+                  <p><b>Owner:</b> <%= listing.owner.firstname %></p>
+                </div>
+                <div class="col-md-6">
+                  <p><b>About:</b><br> <%= listing.about %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>    
+    </div>
+  </div>
+</div>
+<!-- <script src="js/users.js"></script> -->
+<% include footer.ejs %>
+  

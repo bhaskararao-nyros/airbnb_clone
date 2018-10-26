@@ -4,12 +4,15 @@ const store = require('store');
 
 const User = require('../models/user');
 const Host = require('../models/host');
+const Notification = require('../models/notifications');
 
 admin.use('/admin', isLogin, dashboard);
 admin.use('/users', isLogin, getUsers);
 admin.use('/listings', isLogin, getListings);
 admin.use('/approve_listing', isLogin, approveListing);
 admin.use('/unapprove_listing', isLogin, unapproveListing);
+admin.use('/delete_user', isLogin, deleteUser);
+admin.get('/listing_in_detail/:id', isLogin, getSingleListing);
 
 admin.use('/admin_login', function (req, res) {
 	let username = req.body.username, password = req.body.password;
@@ -24,10 +27,11 @@ admin.use('/admin_login', function (req, res) {
 
 function isLogin(req, res, next) {
 	let session = store.get('user');
+	console.log('************* session', session)
 	if (session != undefined) {
 		return next();
-	}
-	if(session == undefined) {
+	} else {
+		console.log('************** session is undefined')
 		res.render('login');
 	}
 }
@@ -69,9 +73,9 @@ function getListings(req, res) {
 }
 
 function approveListing(req, res) {
-	Host.findOneAndUpdate({ _id: req.body.id }, {$set:{ approved: 1 }}, {new: true}, function(err, listing){
+	console.log('*********** approve listing');
+	Host.update({ _id: req.body.id }, { approved: 1 }, function(err, listing){
 	    if (!err) {
-	    	console.log('listing@@@@@@@@@@', listing)
 	    	res.json({
 	           	status:'success',
 	           	message : 'Listings approved'
@@ -81,15 +85,45 @@ function approveListing(req, res) {
 }
 
 function unapproveListing(req, res) {
-	Host.findOneAndUpdate({ _id: req.body.id }, {$set:{ approved: 0 }}, {new: true}, function(err, listing){
+	console.log('************ unapprove listing');
+	Host.update({ _id: req.body.listing_id }, { approved: 0 }, function(err, listing){
 	    if (!err) {
-	    	console.log('listing@@@@@@@@@@@@@', listing)
 	    	res.json({
 	           	status:'success',
 	           	message : 'Listings unapproved'
 	        })
 	    }
 	})
+
+	sendNotification(req.body);
+}
+
+function deleteUser(req, res) {
+	User.remove({ _id: req.body.id }, function(err, user){
+	    if (!err) {
+	    	res.json({
+	           	status:'success',
+	           	message : 'User deleted'
+	        })
+	    }
+	})
+}
+
+function getSingleListing(req, res) {
+	Host.findOne({ _id: req.params.id }).populate('owner').exec(function (err, listing) {
+		if (!err && listing != null) {
+			res.render('listing_in_detail_page', { listing: listing });
+		}
+	})
+}
+
+function sendNotification(obj) {
+	new Notification({
+		listing_id: obj.listing_id,
+		user_id: obj.user_id,
+		reason: obj.reason,
+		type: obj.type,
+	}).save();
 }
 
 

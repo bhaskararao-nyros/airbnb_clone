@@ -14,6 +14,7 @@
 	    	<b-nav-item class="nav_item" href="#/become_host">Become a host</b-nav-item>
 	      	<b-nav-item class="nav_item" href="#" v-b-modal.signup_modal v-if="!userLoggedin">Sign up</b-nav-item>
 	      	<b-nav-item class="nav_item" href="#" v-b-modal.login_modal v-if="!userLoggedin">Log in</b-nav-item>
+          <b-nav-item class="nav_item" href="#/notifications" v-b-modal.login_modal v-if="userLoggedin"><img src="../assets/img/notif_icon.png" class="notif_icon"><span v-if="viewed_notifications.length > 0" class="notif_count">{{ viewed_notifications.length }}</span></b-nav-item>
 	      	<b-nav-item href="#" v-if="userLoggedin">
 	      		<b-dropdown variant="link" size="sm" id="ddown1" class="m-md-2 user_dropdown" no-caret>
 	      			<template slot="button-content" >
@@ -128,24 +129,25 @@ export default {
   name: 'Header',
   data () {
     return {
+      viewed_notifications:[],
     	head_search:false,
-        signin: { login_type:'custom', email: '', password: '' },
-        custom_signup: false,
-        signup: { password: '', cnfpass: '', firstname: '', lastname: '', login_type: 'custom',profile_pic: null },
-        email_err: false,
-        email_err_msg: '*email required',
-        signup_email: '',
-        cnf_pass_err_msg: 'Confirm password required',
-        pass_err: false,
-        cnf_pass_err: false,
-        fn_err: false,
-        ln_err: false,
-        login_email_err: false,
-        login_pass_err: false,
-        login_err: '',
-        userLoggedin: false,
-        showDismissibleAlert: false,
-        user_icon:''
+      signin: { login_type:'custom', email: '', password: '' },
+      custom_signup: false,
+      signup: { password: '', cnfpass: '', firstname: '', lastname: '', login_type: 'custom',profile_pic: null },
+      email_err: false,
+      email_err_msg: '*email required',
+      signup_email: '',
+      cnf_pass_err_msg: 'Confirm password required',
+      pass_err: false,
+      cnf_pass_err: false,
+      fn_err: false,
+      ln_err: false,
+      login_email_err: false,
+      login_pass_err: false,
+      login_err: '',
+      userLoggedin: false,
+      showDismissibleAlert: false,
+      user_icon:''
     }
   },
   methods: {
@@ -387,14 +389,34 @@ export default {
     },
     goToUserProfile () {
       this.$router.push('/user_profile')
+    },
+    getNewNotifications (user_id) {
+      let data = { user_id: user_id }
+      AppService.getNewNotifications(data).then(res => {
+        res.data.data.forEach(function (obj) {
+            if (obj.status === 0) {
+              console.log('************ &&&&&&&&&&')
+              this.viewed_notifications.push(obj)
+              console.log('************',this.viewed_notifications)
+            }
+        });
+      })
     }
+  },
+  beforeMount () {
+    let user = JSON.parse(localStorage.getItem('user'))
+
+    this.getNewNotifications(user._id)
   },
   mounted () {
 
+    let user = JSON.parse(localStorage.getItem('user'))
+
     this.fbInit()
     this.checkUserSession()
+    // this.getNewNotifications(user._id)
 
-  	let user = JSON.parse(localStorage.getItem('user'))
+  	
     // console.log('localStorage user', user)
     if (user != null) {
       this.setUserData(user)
@@ -464,10 +486,17 @@ export default {
 	text-align: center;
 }
 .user_img {
-	width: 30px;
-	border-radius: 15px;
+	width: 40px;
+	border-radius: 20px;
   border: 2px solid #fff;
-  height: 30px;
+  height: 40px;
+}
+.notif_icon {
+  width: 40px;
+  border-radius: 20px;
+  border: 2px solid #fff;
+  height: 40px;
+  margin-top: -5px;
 }
 .user_dropdown {
 	margin: 0px !important;
@@ -482,5 +511,15 @@ div[style] {
   position: relative !important;
   top: 10px !important;
   left: -66px !important;
+}
+.notif_count {
+  background-color: red;
+  font-weight: bold;
+  padding: 1px 7px;
+  position: relative;
+  top: -17px;
+  left: -17px;
+  border-radius: 15px;
+  border: 1px solid;
 }
 </style>
