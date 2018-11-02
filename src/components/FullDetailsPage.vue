@@ -162,20 +162,91 @@
              footer-bg-variant="light"
              footer-text-variant="dark">
 	       <b-container fluid>
-	         <div>
-	           <label>Number of guests to stay</label>
-	           	<div>
-	           		<b-button variant="primary" :disabled="decre_btn_disabled" @click="decreGuests" class="beds_decre_btn">-</b-button> {{ guests_count }}
-	           		<b-button variant="primary" :disabled="incre_btn_disabled" @click="increGuests" class="beds_incre_btn">+</b-button>
+	         <div class="booking_details" v-if="show_booking_details">
+	         	<div class="listing_details">
+	         		<b-row>
+	         			<b-col>
+	         				<p>{{ host.name }}</p>
+	         			</b-col>
+	         			<b-col class="values">
+	         				<img :src="host.images[0].url" width="100px" height="60px">
+	         			</b-col>
+	         		</b-row>
+	         	</div>
+	           	<div class="guests_blk">
+	           		<b-row>
+	         			<b-col>
+	         				<label>Number of guests to stay</label>
+	         			</b-col>
+	         			<b-col class="values">
+	         				<b-button variant="primary" :disabled="decre_btn_disabled" @click="decreGuests" class="beds_decre_btn">-</b-button> {{ guests_count }}
+	           				<b-button variant="primary" :disabled="incre_btn_disabled" @click="increGuests" class="beds_incre_btn">+</b-button>
+	         			</b-col>
+	         		</b-row>
 	           	</div>
-	           	<div>
-	           		<label>Check in & Check out</label>
-	           		<date-picker lang="en" v-model="checkin_out_date" range :shortcuts="shortcuts"></date-picker>
+	           	<div class="check_inout_blk">
+	           		<b-row>
+	         			<b-col>
+	         				<label>Check in & out</label>
+	         			</b-col>
+	         			<b-col class="values">
+	         				<date-picker lang="en" v-model="checkin_out_date" range placeholder="Check in & Check out" @change="onChangeCheckInOut"></date-picker>
+	         			</b-col>
+	         		</b-row>
 	           	</div>
+	           	<div class="taxes_div" v-if="total_price_cal_blk">
+	           		<b-row>
+	           			<b-col>
+	           				<span>&#x20B9;{{ total_guests_amount.toLocaleString() }} &#x2613; {{ day_nights }} nights</span>
+	           			</b-col>
+	           			<b-col class="values">
+	           				<span>&#x20B9; {{ (total_guests_amount * day_nights).toLocaleString() }}</span>
+	           			</b-col>
+	           		</b-row>
+	           		<b-row>
+	           			<b-col>
+	           				<span>Cleaning fee</span>
+	           			</b-col>
+	           			<b-col class="values">
+	           				<span>&#x20B9; {{ cleaning_fee.toLocaleString() }}</span>
+	           			</b-col>
+	           		</b-row>
+	           		<b-row>
+	           			<b-col>
+	           				<span>Service fee</span>
+	           			</b-col>
+	           			<b-col class="values">
+	           				<span>&#x20B9; {{ service_fee.toLocaleString() }}</span>
+	           			</b-col>
+	           		</b-row>
+	           		<b-row class="total_row">
+	           			<b-col>
+	           				<span>Total</span>
+	           			</b-col>
+	           			<b-col class="values">
+	           				<span>&#x20B9; {{ (total_amount + service_fee + cleaning_fee).toLocaleString() }}</span>
+	           			</b-col>
+	           		</b-row>
+	           	</div>
+	         </div>
+	         <div v-if="!show_booking_details">
+	         	<PayPal
+	         	  env="sandbox"
+				  amount="0.01"
+				  currency="USD"
+				  locale="en_US"
+				  :client="paypal_credentials"
+				  @payment-authorized="onPaymentAuthorized"
+		          @payment-completed="onPaymentSuccess"
+		          @payment-cancelled="onPaymentFail">
+				</PayPal>
 	         </div>
 	       </b-container>
 	       <div slot="modal-footer" class="w-100 booking_modal_footer">
-	         <b-btn size="sm" class="float-right" variant="primary" @click="show_booking_modal=false">
+	       	 <b-btn size="sm" class="float-right" variant="primary" @click="onBooking">
+	           Book
+	         </b-btn>
+	         <b-btn size="sm" class="float-right" variant="default" @click="show_booking_modal=false">
 	           Close
 	         </b-btn>
 	       </div>
@@ -190,14 +261,20 @@ import FooterComponent from '@/components/Footer'
 import StarRating from 'vue-star-rating'
 import DatePicker from 'vue2-datepicker'
 import AppService from '@/services/AppService'
+import PayPal from 'vue-paypal-checkout'
 
 export default {
   name: 'FullDetailsPage',
   data () {
     return {
-    	checkin_out_date:'',
-    	checkin_date: "2017-09-05",
-    	checkout_date: "2017-09-05",
+    	show_booking_details: true,
+    	total_amount:0,
+    	total_guests_amount:0,
+    	total_price_cal_blk: false,
+    	cleaning_fee:0,
+    	service_fee:0,
+    	day_nights:0,
+    	checkin_out_date:[],
     	incre_btn_disabled: false,
     	decre_btn_disabled: true,
     	guests_count: 1,
@@ -212,7 +289,10 @@ export default {
     	rating_err: false,
     	review_err: false,
     	user_loggedin: false,
-    	rating_submitted: false
+    	rating_submitted: false,
+    	paypal_credentials: { 
+    		sandbox: 'AWk7NIWfNQpUMRfp52qde_xkuZDyez86IR0oBGYR1fesv0TlLVq4tbuat4VJALP26coplpQ7l4c6mCMe',
+    		production: '' }
     }
   },
   methods: {
@@ -257,6 +337,8 @@ export default {
   		} else {
   			this.incre_btn_disabled = true
   		}
+
+  		this.onChangeCheckInOut()
   	},
   	decreGuests () {
   		if (this.guests_count > 1) {
@@ -267,6 +349,46 @@ export default {
   		} else {
   			this.decre_btn_disabled = true
   		}
+
+  		this.onChangeCheckInOut()
+  	},
+  	onChangeCheckInOut () {
+  		if (this.checkin_out_date.length > 0) {
+  			this.total_price_cal_blk = true
+	  		let pre_date = this.checkin_out_date[0]
+	  		let post_date = this.checkin_out_date[1]
+	  		this.day_nights = Math.round((post_date - pre_date) / (1000 * 60 * 60 * 24))
+	  		let room_price
+	  		if(this.host.host_type === "Entire Place") {
+	  			room_price = 15000
+	  		}
+	  		if(this.host.host_type === "Shared Room") {
+	  			room_price = 7500
+	  		}
+	  		if(this.host.host_type === "Private Room") {
+	  			room_price = 10000
+	  		}
+	  		this.total_guests_amount = room_price * this.guests_count
+
+
+	  		this.total_amount = this.total_guests_amount * this.day_nights
+
+	  		this.cleaning_fee = (this.total_amount/100) * 12.5
+	  		this.service_fee = (this.total_amount/100) * 7.5
+	  	}
+
+  	},
+  	onBooking () {
+  		this.show_booking_details = false
+  	},
+  	onPaymentSuccess (res) {
+  		console.log('payment success res @@@@@', res)
+  	},
+  	onPaymentFail (res) {
+  		console.log('payment failed res ---------', res)
+  	},
+  	onPaymentAuthorized (res) {
+  		console.log('payment authorized res ---------', res)
   	}
   },
   mounted () {
@@ -293,12 +415,16 @@ export default {
     HeaderComponent,
     FooterComponent,
     StarRating,
-    DatePicker
+    DatePicker,
+    PayPal
   }
 }
 </script>
 
 <style scoped>
+.values {
+	text-align: right;
+}
 .head_component {
 	background-color: #a4a77f;
 }
@@ -402,5 +528,48 @@ export default {
 	padding-right: 15px;
 	font-size: 25px;
 	font-weight: bold;
+}
+.taxes_div {
+	margin-top: 2%;
+}
+.listing_details {
+	border-bottom: 1px solid #fff;
+	padding-bottom: 2%;
+	opacity: 0.8;
+	background-color: #ccc;
+	padding: 2%;
+}
+.listing_details img {
+	border-radius: 5px;
+	border: 1px solid #fff;
+}
+.listing_details p {
+	font-weight: bold;
+	font-size: 14px;
+}
+.guests_blk {
+	border-bottom: 1px solid #fff;
+	padding-bottom: 2%;
+	padding-top: 2%;
+}
+.check_inout_blk {
+	border-bottom: 1px solid #fff;
+	padding-bottom: 2%;
+	padding-top: 2%;
+}
+.taxes_div .row {
+	margin-top: 2% !important;
+	margin-bottom: 2% !important;
+	border-bottom: 1px solid #ccc;
+}
+.taxes_div span {
+	color: #515050;
+	font-size: 14px;
+}
+.total_row span {
+	font-weight: bold;
+}
+.total_row {
+	border-bottom: none !important;
 }
 </style>

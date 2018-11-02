@@ -1,30 +1,21 @@
 # Flyhome app
 
-> A Vue.js project
+> This app is for renting homes, flats and apartments on calendar date wise
 
-## Build Setup
+> This app developed using vue js and node js.
 
-``` bash
-# install dependencies
-npm install
+> Authentication done using social login's and custom login too
 
-# serve with hot reload at localhost:8080
-npm run dev
+> This app includes admin panel also and was developed using node js.Run admin panel on this path http://localhost:8001/admin. give admin as username as well as password
 
-# build for production with minification
-npm run build
+> clone this repo
 
-# build for production and view the bundle analyzer report
-npm run build --report
+> run npm install to install node modules
 
-# run unit tests
-npm run unit
+> go to server path and there also you need to install node modules
 
-# run e2e tests
-npm run e2e
+> npm run dev to run front end of the application on this path http://localhost:8000
 
-# run all tests
-npm test
-```
+> node server to run the server on this path http://localhost:8001
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
